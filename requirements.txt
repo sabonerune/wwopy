@@ -1,0 +1,6 @@
+# for no-build-isolation
+cmake
+nanobind>=2
+scikit-build-core>=0.10
+setuptools_scm>=8
+typing_extensions>=3.10; python_version<'3.11'

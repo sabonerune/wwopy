@@ -1,0 +1,77 @@
+wwopy_ext.cheaptrick:
+    \from numpy.typing import ArrayLike, NDArray
+    \from numpy import double
+    def cheaptrick(
+        x: NDArray[double] | ArrayLike,
+        fs: int,
+        temporal_positions: NDArray[double] | ArrayLike,
+        f0: NDArray[double] | ArrayLike,
+        q1: float | None = None,
+        f0_floor: float | None = None,
+        fft_size: int | None = None,
+    ) -> tuple[NDArray[double], int]:
+        \doc
+
+wwopy_ext.d4c:
+    \from numpy.typing import ArrayLike, NDArray
+    \from numpy import double
+    def d4c(
+        x: NDArray[double] | ArrayLike,
+        fs: int,
+        temporal_positions: NDArray[double] | ArrayLike,
+        f0: NDArray[double] | ArrayLike,
+        fft_size: int,
+        threshold: float | None = None,
+    ) -> NDArray[double]:
+        \doc
+
+wwopy_ext.dio:
+    \from numpy.typing import ArrayLike, NDArray
+    \from numpy import double
+    def dio(
+        x: NDArray[double] | ArrayLike,
+        fs: int,
+        f0_floor: float | None = None,
+        f0_ceil: float | None = None,
+        channels_in_octave: float | None = None,
+        frame_period: float | None = None,
+        speed: int | None = None,
+        allowed_range: float | None = None,
+    ) -> tuple[NDArray[double], NDArray[double], float]:
+        \doc
+
+wwopy_ext.harvest:
+    \from numpy.typing import ArrayLike, NDArray
+    \from numpy import double
+    def harvest(
+        x: NDArray[double] | ArrayLike,
+        fs: int,
+        f0_floor: float | None = None,
+        f0_ceil: float | None = None,
+        frame_period: float | None = None,
+    ) -> tuple[NDArray[double], NDArray[double], float]:
+        \doc
+
+wwopy_ext.stonemask:
+    \from numpy.typing import ArrayLike, NDArray
+    \from numpy import double
+    def stonemask(
+        x: NDArray[double] | ArrayLike,
+        fs: int,
+        temporal_positions: NDArray[double] | ArrayLike,
+        f0: NDArray[double] | ArrayLike,
+    ) -> NDArray[double]:
+        \doc
+
+wwopy_ext.synthesis:
+    \from numpy.typing import ArrayLike, NDArray
+    \from numpy import double
+    def synthesis(
+        f0: NDArray[double] | ArrayLike,
+        spectrogram: NDArray[double] | ArrayLike,
+        aperiodicity: NDArray[double] | ArrayLike,
+        fft_size: int,
+        frame_period: float,
+        fs: int,
+    ) -> NDArray[double]:
+        \doc

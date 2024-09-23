@@ -1,0 +1,109 @@
+[build-system]
+requires = [
+  "nanobind>=2, <3",
+  "scikit-build-core>=0.10",
+  "setuptools_scm>=8, <9",
+  "typing_extensions>=3.10, <5; python_version<'3.11'",
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "wwopy"
+dynamic = ["version"]
+description = "A Python wrapper for World."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "BSD-2-Clause" }
+authors = [{ name = "sabonerune" }]
+classifiers = [
+  "Private :: Do Not Upload",
+  "Development Status :: 1 - Planning",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  # TODO: Test MacOS
+  # "Operating System :: MacOS :: MacOS X",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: C++",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Software Development",
+]
+dependencies = ["numpy"]
+
+[project.optional-dependencies]
+dev = ["clang-format", "cmake-format", "ruff"]
+test = ["pytest"]
+
+[tool.scikit-build]
+metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
+minimum-version = "build-system.requires"
+sdist.include = ["src/wwopy/_version.py"]
+sdist.exclude = [
+  ".github/",
+  "test/",
+  ".clang-format",
+  ".clang-tidy",
+  ".cmake-format",
+  ".gitattributes",
+  ".gitignore",
+  ".gitmodules",
+  "requirements.txt",
+  "ext/World/build/",
+  "ext/World/examples/",
+  "ext/World/test/",
+  "ext/World/visualstudio20[0-9][0-9]/",
+  "ext/World/.gitignore",
+  "ext/World/makefile",
+  "ext/World/styleguide.txt",
+]
+wheel.license-files = []
+
+[tool.setuptools_scm]
+version_file = "src/wwopy/_version.py"
+version_file_template = '''
+_version = "{version}"
+'''
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["test"]
+
+[tool.ruff]
+src = ["src"]
+
+[tool.ruff.lint]
+extend-select = [
+  "B",   # flake8-bugbear
+  "I",   # isort
+  "ARG", # flake8-unused-arguments
+  "C4",  # flake8-comprehensions
+  "EM",  # flake8-errmsg
+  "ICN", # flake8-import-conventions
+  "G",   # flake8-logging-format
+  "PGH", # pygrep-hooks
+  "PIE", # flake8-pie
+  "PL",  # pylint
+  "PT",  # flake8-pytest-style
+  "PTH", # flake8-use-pathlib
+  "RET", # flake8-return
+  "RUF", # Ruff-specific
+  "SIM", # flake8-simplify
+  "T20", # flake8-print
+  "UP",  # pyupgrade
+  "YTT", # flake8-2020
+  "EXE", # flake8-executable
+  "NPY", # NumPy specific rules
+]
+ignore = [
+  "PLR09",   # Too many <...>
+  "PLR2004", # Magic value used in comparison
+  "ISC001",  # Conflicts with formatter
+]

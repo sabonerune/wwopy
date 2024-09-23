@@ -1,0 +1,25 @@
+{
+  "parse": {
+    "additional_commands": {
+      "nanobind_add_stub": {
+        "pargs": 1,
+        "flags": [
+          "INSTALL_TIME",
+          "VERBOSE",
+          "EXCLUDE_DOCSTRINGS",
+          "INCLUDE_PRIVATE",
+          "EXCLUDE_FROM_ALL"
+        ],
+        "kwargs": {
+          "MODULE": "*",
+          "OUTPUT": "*",
+          "PYTHON_PATH": "*",
+          "DEPENDS": "*",
+          "MARKER_FILE": "*",
+          "PATTERN_FILE": "*",
+          "COMPONENT": "*"
+        }
+      }
+    }
+  }
+}

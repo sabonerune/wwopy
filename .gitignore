@@ -1,3 +1,7 @@
+src/wwopy/_version.py
+src/wwopy/py.typed
+src/wwopy/wwopy_ext.pyi
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
