@@ -58,6 +58,6 @@ python -m pytest
 
 ``` Shell
 python -m ruff check --fix
-clang-format -i ./src/ww4py_ext.cpp
+clang-format -i ./src/wwopy_ext.cpp
 cmake-format --in-place ./CMakeLists.txt
 ```
