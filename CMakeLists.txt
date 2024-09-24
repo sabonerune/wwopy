@@ -76,13 +76,13 @@ install(FILES ${CMAKE_BINARY_DIR}/py.typed ${CMAKE_BINARY_DIR}/wwopy_ext.pyi
         DESTINATION wwopy)
 
 # Merge licenses
-execute_process(
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/LICENSE.txt"
   COMMAND "${Python_EXECUTABLE}" cmake/generate_license.py
           "--dist=${CMAKE_BINARY_DIR}/LICENSE.txt"
+  DEPENDS LICENSE.txt cmake/generate_license.py ext/World/LICENSE.txt wwopy_ext
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  RESULT_VARIABLE result)
-if("${result}")
-  message(FATAL_ERROR "License generation failed.")
-endif()
-install(FILES ${CMAKE_BINARY_DIR}/LICENSE.txt
-        DESTINATION ${SKBUILD_METADATA_DIR}/licenses)
+  COMMENT "Generating ${CMAKE_BINARY_DIR}/LICENSE.txt")
+add_custom_target(wwopy_license ALL DEPENDS "${CMAKE_BINARY_DIR}/LICENSE.txt")
+install(FILES "${CMAKE_BINARY_DIR}/LICENSE.txt"
+        DESTINATION "${SKBUILD_METADATA_DIR}/licenses")

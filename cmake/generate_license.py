@@ -2,28 +2,20 @@ from __future__ import annotations
 
 import argparse
 import importlib.metadata
-import sys
 from pathlib import Path
-from urllib.request import urlopen
-from urllib.response import addinfourl
 
 _project_root = Path(__file__).parents[1]
 
 
 def read_nanobind_license() -> str:
     dist = importlib.metadata.distribution("nanobind")
-    text = dist.read_text("licenses/LICENSE")
+    version = dist.version
+    filename = "LICENSE" if version == "2.0.0" else "licenses/LICENSE"
+    text = dist.read_text(filename)
     if text is None:
-        text = fetch_nanobind_license(dist.version)
+        msg = "nanobind license file is not found."
+        raise Exception(msg)
     return text
-
-
-# fallback
-def fetch_nanobind_license(version: str) -> str:
-    url = f"https://github.com/wjakob/nanobind/raw/refs/tags/v{version}/LICENSE"
-    with urlopen(url) as r:
-        res: addinfourl = r
-        return res.read().decode()
 
 
 def read_license_from_file(filepath: Path) -> str:
@@ -54,5 +46,4 @@ def main(args: list[str] | None = None):
 
 
 if __name__ == "__main__":
-    print("RUN: " + " ".join(sys.argv))  # noqa: T201
     main()
