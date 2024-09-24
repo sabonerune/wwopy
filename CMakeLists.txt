@@ -26,11 +26,6 @@ if(NOT "${SKBUILD}")
   after editing C++ files.")
 endif()
 
-find_package(
-  Python 3.8 REQUIRED
-  COMPONENTS Interpreter Development.Module
-  OPTIONAL_COMPONENTS Development.SABIModule)
-
 if(NOT "${CMAKE_BUILD_TYPE}" AND NOT "${CMAKE_CONFIGURATION_TYPES}")
   set(CMAKE_BUILD_TYPE
       Release
@@ -39,21 +34,29 @@ if(NOT "${CMAKE_BUILD_TYPE}" AND NOT "${CMAKE_CONFIGURATION_TYPES}")
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
+find_package(
+  Python 3.8 REQUIRED
+  COMPONENTS Interpreter Development.Module
+  OPTIONAL_COMPONENTS Development.SABIModule)
+
 execute_process(
   COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
   OUTPUT_STRIP_TRAILING_WHITESPACE
   OUTPUT_VARIABLE nanobind_ROOT)
 find_package(nanobind CONFIG REQUIRED)
 
-nanobind_add_module(wwopy_ext NB_STATIC src/wwopy_ext.cpp)
-target_compile_options(wwopy_ext PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-
+# WORLD
 option(WORLD_BUILD_EXAMPLES "" OFF)
 add_subdirectory(ext/World EXCLUDE_FROM_ALL)
-target_link_libraries(wwopy_ext PRIVATE world::core)
-# Why?
-target_include_directories(wwopy_ext PRIVATE ext/World/src)
+# Something is probably wrong.
+target_include_directories(
+  world
+  INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ext/World/src>")
 
+# module
+nanobind_add_module(wwopy_ext NB_STATIC src/wwopy_ext.cpp)
+target_compile_options(wwopy_ext PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+target_link_libraries(wwopy_ext PRIVATE world)
 install(TARGETS wwopy_ext LIBRARY DESTINATION wwopy)
 
 # stub file
@@ -64,16 +67,16 @@ nanobind_add_stub(
   PYTHON_PATH $<TARGET_FILE_DIR:wwopy_ext>
   DEPENDS wwopy_ext
   MARKER_FILE py.typed
-  PATTERN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/pattern_file.nb)
+  PATTERN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/pattern_file.nb")
 
+install(FILES "${CMAKE_BINARY_DIR}/py.typed" "${CMAKE_BINARY_DIR}/wwopy_ext.pyi"
+        DESTINATION wwopy)
 if("${SKBUILD_STATE}" STREQUAL "editable")
   # Dev only. Install stub file to source directory.
-  install(FILES ${CMAKE_BINARY_DIR}/py.typed ${CMAKE_BINARY_DIR}/wwopy_ext.pyi
-          DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/wwopy)
+  install(FILES "${CMAKE_BINARY_DIR}/py.typed"
+                "${CMAKE_BINARY_DIR}/wwopy_ext.pyi"
+          DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/src/wwopy")
 endif()
-
-install(FILES ${CMAKE_BINARY_DIR}/py.typed ${CMAKE_BINARY_DIR}/wwopy_ext.pyi
-        DESTINATION wwopy)
 
 # Merge licenses
 add_custom_command(
@@ -81,7 +84,7 @@ add_custom_command(
   COMMAND "${Python_EXECUTABLE}" cmake/generate_license.py
           "--dist=${CMAKE_BINARY_DIR}/LICENSE.txt"
   DEPENDS LICENSE.txt cmake/generate_license.py ext/World/LICENSE.txt wwopy_ext
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   COMMENT "Generating ${CMAKE_BINARY_DIR}/LICENSE.txt")
 add_custom_target(wwopy_license ALL DEPENDS "${CMAKE_BINARY_DIR}/LICENSE.txt")
 install(FILES "${CMAKE_BINARY_DIR}/LICENSE.txt"
