@@ -7,8 +7,8 @@ SPDX-License-Identifier: BSD-2-Clause
 #include <nanobind/ndarray.h>
 #include <nanobind/stl/optional.h>  // NOLINT(misc-include-cleaner)
 #include <world/cheaptrick.h>
-#include <world/d4c.h>
 #include <world/dio.h>
+#include <world/d4c.h>
 #include <world/harvest.h>
 #include <world/stonemask.h>
 #include <world/synthesis.h>

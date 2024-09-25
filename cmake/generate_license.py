@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import argparse
 import importlib.metadata
 from pathlib import Path
