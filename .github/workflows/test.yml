@@ -8,7 +8,39 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  lint:
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        id: install-depend
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .[dev]
+      - name: Run Ruff
+        run: |
+          python -m ruff check --output-format=github
+      - name: Run clang-format
+        if: ${{ steps.install-depend.outcome == 'success' }}
+        run: |
+          clang-format --Werror --dry-run src/wwopy_ext.cpp
+      - name: Run clang-format
+        if: ${{ steps.install-depend.conclusion == 'success' }}
+        run: |
+          cmake-format --check ./CMakeLists.txt
+
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -28,7 +60,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install --requirement ./requirements.txt
-          python -m pip install --no-build-isolation .[test]
+          python -m pip install -C build.verbose=true -C logging.level=INFO -v --no-build-isolation .[test]
       - name: Test with pytest
         run: |
-          pytest
+          python -m pytest
