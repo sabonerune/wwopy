@@ -79,11 +79,12 @@ if("${SKBUILD_STATE}" STREQUAL "editable")
 endif()
 
 # Merge licenses
+add_custom_command(OUTPUT always_rebuild COMMAND "${CMAKE_COMMAND}" -E echo)
 add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/LICENSE.txt"
   COMMAND "${Python_EXECUTABLE}" cmake/generate_license.py
           "--dist=${CMAKE_BINARY_DIR}/LICENSE.txt"
-  DEPENDS LICENSE.txt cmake/generate_license.py ext/World/LICENSE.txt wwopy_ext
+  DEPENDS always_rebuild
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   COMMENT "Generating ${CMAKE_BINARY_DIR}/LICENSE.txt")
 add_custom_target(wwopy_license ALL DEPENDS "${CMAKE_BINARY_DIR}/LICENSE.txt")

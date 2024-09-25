@@ -10,6 +10,7 @@ _project_root = Path(__file__).parents[1]
 def read_nanobind_license() -> str:
     dist = importlib.metadata.distribution("nanobind")
     version = dist.version
+    # NOTE: Use packaging when requirements increase
     filename = "LICENSE" if version == "2.0.0" else "licenses/LICENSE"
     text = dist.read_text(filename)
     if text is None:
