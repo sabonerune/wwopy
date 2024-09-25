@@ -45,9 +45,6 @@ execute_process(
   OUTPUT_VARIABLE nanobind_ROOT)
 find_package(nanobind CONFIG REQUIRED)
 
-
-
-
 # WORLD
 option(WORLD_BUILD_EXAMPLES "" OFF)
 add_subdirectory(ext/World EXCLUDE_FROM_ALL)
