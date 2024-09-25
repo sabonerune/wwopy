@@ -24,17 +24,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
+        id: install-depend
         run: |
           exit 1
       - name: Run Ruff
         run: |
           python -m ruff check --output-format=github
       - name: Run clang-format
-        if: ${{ !cancelled() }}
+        if: ${{ steps.install-depend.outcome == 'success' }}
         run: |
           clang-format --Werror --dry-run src/wwopy_ext.cpp
       - name: Run clang-format
-        if: ${{ !cancelled() }}
+        if: ${{ steps.install-depend.conclusion == 'success' }}
         run: |
           cmake-format --check ./CMakeLists.txt
 
