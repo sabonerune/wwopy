@@ -50,12 +50,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --requirement ./requirements.txt
+        run: "\
+          python -m pip install --upgrade pip\n
+          python -m pip install --requirement ./requirements.txt\n
           python -m pip install --config-settings=build.verbose=true \
-            --config-settings=logging.level=INFO\
-            --verbose --no-build-isolation .[test]
+            --config-settings=logging.level=INFO \
+            --verbose --no-build-isolation .[test]"
       - name: Test with pytest
         run: |
           python -m pytest
