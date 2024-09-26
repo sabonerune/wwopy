@@ -31,6 +31,8 @@ using inputNDarray = nb::ndarray<const double, nb::ndim<N>>;
 template <size_t N>
 using outputNDarray = nb::ndarray<nb::numpy, double, nb::ndim<N>>;
 
+namespace {
+std::mutex the_world;
 template <typename T, typename U>
 auto make_ndarray(std::unique_ptr<U[]>&& ptr,
                   std::initializer_list<size_t> shape) -> T {
@@ -57,10 +59,6 @@ void validate_samplerate(int samplerate) {
   if (samplerate <= 0) {
     throw std::invalid_argument("samplerate must be non-negative.");
   }
-}
-
-namespace {
-std::mutex the_world;
 }
 
 auto cheaptrick(const inputNDarray<1>& x,
@@ -104,7 +102,7 @@ auto cheaptrick(const inputNDarray<1>& x,
     throw std::invalid_argument("fft_size must be non-negative.");
   }
   const size_t f0_length = f0.size();
-  const size_t spectrogram_length = option.fft_size / 2 + 1;
+  const size_t spectrogram_length = (option.fft_size / 2) + 1;
   if (f0_length == 0) {
     const auto gil = nb::gil_scoped_acquire();
     return nb::make_tuple(
@@ -152,7 +150,7 @@ auto d4c(const inputNDarray<1>& x,
     option.threshold = *threshold;
   }
   const size_t f0_length = f0.size();
-  const size_t aperiodicity_length = fft_size / 2 + 1;
+  const size_t aperiodicity_length = (fft_size / 2) + 1;
   if (f0_length == 0) {
     const auto gil = nb::gil_scoped_acquire();
     return outputNDarray<2>(nullptr, {0, aperiodicity_length}, nb::handle());
@@ -357,7 +355,7 @@ auto synthesis(const inputNDarray<1>& f0,
     return make_ndarray<outputNDarray<1>>(std::move(y), {y_length});
   }
 }
-
+}  // namespace
 // NOLINTNEXTLINE
 NB_MODULE(wwopy_ext, m) {
   m.def("cheaptrick", &cheaptrick, "x"_a, "fs"_a, "temporal_positions"_a,

@@ -41,6 +41,10 @@ jobs:
         if: ${{ steps.install-depend.outcome == 'success' }}
         run: |
           clang-format --Werror --dry-run src/wwopy_ext.cpp
+      - name: Run clang-tidy
+        if: ${{ steps.install-depend.outcome == 'success' }}
+        run: |
+          clang-tidy -p build --warnings-as-errors=* src/wwopy_ext.cpp
       - name: Run clang-format
         if: ${{ steps.install-depend.conclusion == 'success' }}
         run: |
