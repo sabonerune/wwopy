@@ -38,7 +38,7 @@ classifiers = [
 dependencies = ["numpy"]
 
 [project.optional-dependencies]
-dev = ["clang-format", "cmake-format", "ruff"]
+dev = ["clang-format==19.*", "clang-tidy==19.*", "cmake-format", "ruff"]
 test = ["pytest"]
 
 [tool.scikit-build]
