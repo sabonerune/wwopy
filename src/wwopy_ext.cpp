@@ -91,6 +91,7 @@ auto cheaptrick(const inputNDarray<1>& x,
       warn(msg, runtimeWarning);
     }
     option.fft_size = *fft_size;
+    option.f0_floor = GetF0FloorForCheapTrick(fs, *fft_size);
   } else if (f0_floor) {
     if (*f0_floor <= 0.0) {
       throw std::invalid_argument("f0_floor must be non-negative.");
@@ -203,8 +204,6 @@ auto dio(const inputNDarray<1>& x,
     option.frame_period = *frame_period;
   }
   if (speed) {
-    // see
-    // https://github.com/mmorise/World/blob/e29cd90abc306a26817d6c081cbad0a1779d7162/src/dio.cpp#L657-L660
     const auto speed_max = 12;
     if (*speed <= 0 || *speed > speed_max) {
       throw std::invalid_argument("speed must be in the range 1 to 12.");
@@ -356,6 +355,7 @@ auto synthesis(const inputNDarray<1>& f0,
   }
 }
 }  // namespace
+
 // NOLINTNEXTLINE
 NB_MODULE(wwopy_ext, m) {
   m.def("cheaptrick", &cheaptrick, "x"_a, "fs"_a, "temporal_positions"_a,
@@ -375,9 +375,16 @@ NB_MODULE(wwopy_ext, m) {
         f0 : np.NDArray[np.double]
             F0 contour
         q1 : float, optional
+            Used for the spectral recovery
+            Since The parameter is optimized, you don't need to change the parameter.
         f0_floor : float, optional
+            Whenever f0 is below this threshold the spectrum will be analyzed as if the frame is unvoiced
+            We strongly recommend not to change this value unless you have enough
+            knowledge of the signal processing in CheapTrick.
+            Used to determine fft_size.
         fft_size : int, optional
             FFT size
+            This variable has precedence over f0_floor.
         
         Returns
         -------
@@ -389,7 +396,7 @@ NB_MODULE(wwopy_ext, m) {
         Examples
         --------
         >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
-        >>> wwopy.cheaptrick(x, fs, temporal_positions, f0))");
+        >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0))");
 
   m.def("d4c", &d4c, "x"_a, "fs"_a, "temporal_positions"_a, "f0"_a,
         "fft_size"_a, "threshold"_a = nb::none(),
@@ -409,7 +416,12 @@ NB_MODULE(wwopy_ext, m) {
             F0 contour
         fft_size : int
             FFT size
+            Typically this will be the same as DIO or Harvest.
         threshold : float, optional
+            It is used to determine the aperiodicity in whole frequency band.
+            D4C identifies whether the frame is voiced segment even if it had an F0.
+            If the estimated value falls below the threshold,
+            the aperiodicity in whole frequency band will set to 1.0.
         
         Returns
         -------
@@ -420,7 +432,7 @@ NB_MODULE(wwopy_ext, m) {
         --------
         >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
         >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
-        >>> wwopy.d4c(x, fs, temporal_positions, f0, fft_size))");
+        >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, f0, fft_size))");
 
   m.def("dio", &dio, "x"_a, "fs"_a, "f0_floor"_a = nb::none(),
         "f0_ceil"_a = nb::none(), "channels_in_octave"_a = nb::none(),
@@ -458,7 +470,7 @@ NB_MODULE(wwopy_ext, m) {
 
         Examples
         --------
-        >>> wwopy.dio(x, fs))");
+        >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs))");
 
   m.def("harvest", &harvest, "x"_a, "fs"_a, "f0_floor"_a = nb::none(),
         "f0_ceil"_a = nb::none(), "frame_period"_a = nb::none(),
@@ -488,7 +500,7 @@ NB_MODULE(wwopy_ext, m) {
 
         Examples
         --------
-        >>> wwopy.harvest(x, fs))");
+        >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs))");
 
   m.def("stonemask", &stonemask, "x"_a, "fs"_a, "temporal_positions"_a, "f0"_a,
         nb::call_guard<nb::gil_scoped_release>(),
@@ -514,7 +526,7 @@ NB_MODULE(wwopy_ext, m) {
         Examples
         --------
         >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs)
-        >>> wwopy.stonemask(x, fs, temporal_positions, f0))");
+        >>> refined_f0 = wwopy.stonemask(x, fs, temporal_positions, f0))");
 
   m.def("synthesis", &synthesis, "f0"_a, "spectrogram"_a, "aperiodicity"_a,
         "fft_size"_a, "frame_period"_a, "fs"_a,
@@ -544,8 +556,9 @@ NB_MODULE(wwopy_ext, m) {
         
         Examples
         --------
-        >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
-        >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
-        >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, f0, fft_size)
-        >>> wwopy.synthesis(f0, spectrogram, aperiodicity, fft_size, frame_period, fs))");
+        >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs)
+        >>> refined_f0 = wwopy.stonemask(x, fs, temporal_positions, f0)
+        >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, refined_f0)
+        >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, refined_f0, fft_size)
+        >>> y = wwopy.synthesis(refined_f0, spectrogram, aperiodicity, fft_size, frame_period, fs))");
 }
