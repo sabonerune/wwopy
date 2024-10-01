@@ -92,9 +92,15 @@ auto cheaptrick(const inputNDarray<1>& x,
     }
     option.fft_size = *fft_size;
     option.f0_floor = GetF0FloorForCheapTrick(fs, *fft_size);
+    if (option.f0_floor <= 0) {
+      throw std::invalid_argument("fft_size is invalid.");
+    }
   } else if (f0_floor) {
     if (*f0_floor <= 0.0) {
       throw std::invalid_argument("f0_floor must be non-negative.");
+    }
+    if (*f0_floor < GetF0FloorForCheapTrick(fs, INT_MAX)) {
+      throw std::invalid_argument("Determine fft_size is invalid.");
     }
     option.f0_floor = *f0_floor;
     option.fft_size = GetFFTSizeForCheapTrick(fs, &option);
