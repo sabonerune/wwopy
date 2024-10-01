@@ -3,7 +3,7 @@ import numpy as np
 import wwopy
 
 
-def test_emptry():
+def test_empty():
     empty_x = np.empty(0, np.double)
     empty_temporal_positions = np.empty(0, np.double)
     empty_f0 = np.empty(0, np.double)

@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pytest
 
+import wwopy
+
 if sys.version_info >= (3, 11):
     from typing import assert_never
 
@@ -46,3 +48,11 @@ def test_wave() -> tuple[npt.NDArray[np.double], int]:
     if nchannels != 1:
         data = data.reshape((-1, nchannels))
     return data, framerate
+
+
+@pytest.fixture
+def dio_result(
+    test_wave: tuple[npt.NDArray[np.double], int],
+) -> tuple[npt.NDArray[np.double], npt.NDArray[np.double], float]:
+    x, fs = test_wave
+    return wwopy.dio(x, fs)
