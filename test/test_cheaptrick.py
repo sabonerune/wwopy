@@ -27,7 +27,7 @@ def test_fft_size(
     dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],
 ):
     x, fs = test_wave
-    fft_size = 4080
+    fft_size = 4096
     temporal_positions, f0, frame_period = dio_result
     spectrogram, result_fft_size = wwopy.cheaptrick(
         x, fs, temporal_positions, f0, fft_size=fft_size
