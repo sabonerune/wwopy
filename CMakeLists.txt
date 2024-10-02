@@ -48,15 +48,11 @@ find_package(nanobind CONFIG REQUIRED)
 # WORLD
 option(WORLD_BUILD_EXAMPLES "" OFF)
 add_subdirectory(ext/World EXCLUDE_FROM_ALL)
-# Something is probably wrong.
-target_include_directories(
-  world
-  INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ext/World/src>")
 
 # module
 nanobind_add_module(wwopy_ext NB_STATIC src/wwopy_ext.cpp)
 target_compile_options(wwopy_ext PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-target_link_libraries(wwopy_ext PRIVATE world)
+target_link_libraries(wwopy_ext PRIVATE world::core)
 install(TARGETS wwopy_ext LIBRARY DESTINATION wwopy)
 
 # stub file
@@ -80,6 +76,7 @@ endif()
 
 # Merge licenses
 add_custom_command(OUTPUT always_rebuild COMMAND "${CMAKE_COMMAND}" -E echo)
+set_source_files_properties(always_rebuild PROPERTIES SYMBOLIC ON)
 add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/LICENSE.txt"
   COMMAND "${Python_EXECUTABLE}" cmake/generate_license.py
