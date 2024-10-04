@@ -29,11 +29,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          if [ -n "${{inputs.enable_pyworld}}" ]; then
+            python -m pip install pyworld setuptools
+          fi
           python -m pip install .
-      - name: Install PyWORLD
-        if: ${{ inputs.enable_pyworld }} 
-        run: |
-          python -m pip install pyworld
       - name: Benchmark
         run: |
-          python benchmark/benchmark.py
+          python benchmark/benchmark.py --number=128 --n-thread=8

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import sys
 import threading
 import timeit
@@ -320,9 +321,7 @@ def bench_pw_mt(number: int, n_thread: int, globals: dict) -> None:
     print_result("pw: hervest + cheaptrick + d4c + synthesis", num, results)
 
 
-def main():
-    number = 64
-    n_thread = 4
+def main(number=64, n_thread=4):
     wav, fs = test_wave()
     data = {"wav": wav, "fs": fs}
     bench_wwopy(number, data)
@@ -333,4 +332,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--number", default=64, type=int)
+    parser.add_argument("--n-thread", default=4, type=int)
+    arg = parser.parse_args()
+    main(arg.number, arg.n_thread)
