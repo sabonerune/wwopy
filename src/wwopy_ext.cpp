@@ -17,7 +17,6 @@ SPDX-License-Identifier: BSD-2-Clause
 #include <cstddef>
 #include <initializer_list>
 #include <memory>
-#include <mutex>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -32,7 +31,6 @@ template <size_t N>
 using outputNDarray = nb::ndarray<nb::numpy, double, nb::ndim<N>>;
 
 namespace {
-std::mutex the_world;
 template <typename T, typename U>
 auto make_ndarray(std::unique_ptr<U[]>&& ptr,
                   std::initializer_list<size_t> shape) -> T {
@@ -122,12 +120,9 @@ auto cheaptrick(const inputNDarray<1>& x,
   for (size_t i = 0; i < f0_length; i++) {
     spectrogram[i] = &output_array[i * spectrogram_length];
   }
-  {
-    const std::lock_guard<std::mutex> lock(the_world);
-    CheapTrick(x.data(), static_cast<int>(x.size()), fs,
-               temporal_positions.data(), f0.data(),
-               static_cast<int>(f0_length), &option, spectrogram.get());
-  }
+  CheapTrick(x.data(), static_cast<int>(x.size()), fs,
+             temporal_positions.data(), f0.data(), static_cast<int>(f0_length),
+             &option, spectrogram.get());
   {
     const auto gil = nb::gil_scoped_acquire();
     const auto result = make_ndarray<outputNDarray<2>>(
@@ -168,12 +163,9 @@ auto d4c(const inputNDarray<1>& x,
   for (size_t i = 0; i < f0_length; i++) {
     aperiodicity[i] = &output_array[i * aperiodicity_length];
   }
-  {
-    const std::lock_guard<std::mutex> lock(the_world);
-    D4C(x.data(), static_cast<int>(x.size()), fs, temporal_positions.data(),
-        f0.data(), static_cast<int>(f0_length), fft_size, &option,
-        aperiodicity.get());
-  }
+  D4C(x.data(), static_cast<int>(x.size()), fs, temporal_positions.data(),
+      f0.data(), static_cast<int>(f0_length), fft_size, &option,
+      aperiodicity.get());
   {
     const auto gil = nb::gil_scoped_acquire();
     return make_ndarray<outputNDarray<2>>(std::move(output_array),
@@ -349,12 +341,9 @@ auto synthesis(const inputNDarray<1>& f0,
     }
   }
   auto y = std::make_unique<double[]>(y_length);
-  {
-    std::lock_guard<std::mutex> const lock(the_world);
-    Synthesis(f0.data(), static_cast<int>(f0_length), tmp_spectram.get(),
-              tmp_aperiodicity.get(), fft_size, frame_period, fs,
-              static_cast<int>(y_length), y.get());
-  }
+  Synthesis(f0.data(), static_cast<int>(f0_length), tmp_spectram.get(),
+            tmp_aperiodicity.get(), fft_size, frame_period, fs,
+            static_cast<int>(y_length), y.get());
   {
     const auto gil = nb::gil_scoped_acquire();
     return make_ndarray<outputNDarray<1>>(std::move(y), {y_length});
