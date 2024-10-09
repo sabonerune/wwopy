@@ -1,6 +1,23 @@
 {
   "parse": {
     "additional_commands": {
+      "nanobind_add_module": {
+        "pargs": "2+",
+        "flags": [
+          "STABLE_ABI",
+          "FREE_THREADED",
+          "NB_STATIC",
+          "NB_SHARED",
+          "PROTECT_STACK",
+          "LTO",
+          "NOMINSIZE",
+          "NOSTRIP",
+          "MUSL_DYNAMIC_LIBCPP"
+        ],
+        "kwargs": {
+          "NB_DOMAIN": 1
+        }
+      },
       "nanobind_add_stub": {
         "pargs": 1,
         "flags": [
