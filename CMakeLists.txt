@@ -50,7 +50,20 @@ option(WORLD_BUILD_EXAMPLES "" OFF)
 add_subdirectory(ext/World EXCLUDE_FROM_ALL)
 
 # module
-nanobind_add_module(wwopy_ext NB_STATIC src/wwopy_ext.cpp)
+nanobind_add_module(
+  wwopy_ext
+  NB_STATIC
+  src/cheaptrick_ext.cpp
+  src/d4c_ext.cpp
+  src/dio_ext.cpp
+  src/harvest_ext.cpp
+  src/stonemask_ext.cpp
+  src/synthesis_ext.cpp
+  src/util.cpp
+  src/util.hpp
+  src/wwopy_ext.cpp
+  src/wwopy_init.hpp)
+target_compile_features(wwopy_ext PUBLIC cxx_std_17)
 target_compile_options(wwopy_ext PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 target_link_libraries(wwopy_ext PRIVATE world::core)
 install(TARGETS wwopy_ext LIBRARY DESTINATION wwopy)
