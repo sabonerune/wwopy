@@ -16,8 +16,9 @@ namespace nb = nanobind;
 
 auto util::make_empty_ndarray()
     -> nb::ndarray<nanobind::numpy, double, nanobind::ndim<1>> {
-  return nb::ndarray<nb::numpy, double, nb::ndim<1>>(nullptr, {0},
-                                                     nb::handle());
+  return nb::ndarray<nb::numpy, double, nb::ndim<1>>(
+      nullptr, {0}, nb::handle()
+  );
 }
 
 void util::validate_x_lenth(size_t x_lenth) {

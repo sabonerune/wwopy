@@ -23,17 +23,20 @@ using namespace nb::literals;
 
 namespace {
 
-auto d4c(const util::inputNDarray<1>& x,
-         const int fs,
-         const util::inputNDarray<1>& temporal_positions,
-         const util::inputNDarray<1>& f0,
-         const int fft_size,
-         const std::optional<double> threshold) {
+auto d4c(
+    const util::inputNDarray<1>& x,
+    const int fs,
+    const util::inputNDarray<1>& temporal_positions,
+    const util::inputNDarray<1>& f0,
+    const int fft_size,
+    const std::optional<double> threshold
+) {
   util::validate_x_lenth(x.size());
   util::validate_fs(fs);
   if (temporal_positions.size() != f0.size()) {
     throw std::invalid_argument(
-        "The lengths of temporal_positions and f0 do not match.");
+        "The lengths of temporal_positions and f0 do not match."
+    );
   }
   if (fft_size <= 0) {
     throw std::invalid_argument("fft_size must be non-negative.");
@@ -47,8 +50,9 @@ auto d4c(const util::inputNDarray<1>& x,
   const size_t aperiodicity_length = (fft_size / 2) + 1;
   if (f0_length == 0) {
     const nb::gil_scoped_acquire gil;
-    return util::outputNDarray<2>(nullptr, {0, aperiodicity_length},
-                                  nb::handle());
+    return util::outputNDarray<2>(
+        nullptr, {0, aperiodicity_length}, nb::handle()
+    );
   }
   const auto aperiodicity = std::make_unique<double*[]>(f0_length);
   auto output_array =
@@ -62,17 +66,18 @@ auto d4c(const util::inputNDarray<1>& x,
   {
     const nb::gil_scoped_acquire gil;
     return util::make_ndarray<util::outputNDarray<2>>(
-        std::move(output_array), {f0_length, aperiodicity_length});
+        std::move(output_array), {f0_length, aperiodicity_length}
+    );
   }
 }
 
 }  // namespace
 
 void d4c_init(nb::module_& m) {
-  m.def("d4c", &d4c, "x"_a, "fs"_a, "temporal_positions"_a, "f0"_a,
-        "fft_size"_a, "threshold"_a = nb::none(),
-        nb::call_guard<nb::gil_scoped_release>(),
-        R"(
+  m.def(
+      "d4c", &d4c, "x"_a, "fs"_a, "temporal_positions"_a, "f0"_a, "fft_size"_a,
+      "threshold"_a = nb::none(), nb::call_guard<nb::gil_scoped_release>(),
+      R"(
         Calculates the aperiodicity.
         
         Parameters
@@ -103,5 +108,6 @@ void d4c_init(nb::module_& m) {
         --------
         >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
         >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
-        >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, f0, fft_size))");
+        >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, f0, fft_size))"
+  );
 }
