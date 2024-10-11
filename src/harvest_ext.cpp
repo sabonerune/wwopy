@@ -24,11 +24,13 @@ using namespace nb::literals;
 
 namespace {
 
-auto harvest(const util::inputNDarray<1>& x,
-             const int fs,
-             const std::optional<double> f0_floor,
-             const std::optional<double> f0_ceil,
-             const std::optional<double> frame_period) {
+auto harvest(
+    const util::inputNDarray<1>& x,
+    const int fs,
+    const std::optional<double> f0_floor,
+    const std::optional<double> f0_ceil,
+    const std::optional<double> frame_period
+) {
   const size_t x_length = x.size();
   util::validate_x_lenth(x_length);
   util::validate_fs(fs);
@@ -48,32 +50,39 @@ auto harvest(const util::inputNDarray<1>& x,
   }
   if (x_length == 0) {
     const nb::gil_scoped_acquire gil;
-    return nb::make_tuple(util::make_empty_ndarray(),
-                          util::make_empty_ndarray(), option.frame_period);
+    return nb::make_tuple(
+        util::make_empty_ndarray(), util::make_empty_ndarray(),
+        option.frame_period
+    );
   }
   const size_t f0_length =
       GetSamplesForHarvest(fs, static_cast<int>(x_length), option.frame_period);
   auto temporal_positions = std::make_unique<double[]>(f0_length);
   auto f0 = std::make_unique<double[]>(f0_length);
-  Harvest(x.data(), static_cast<int>(x_length), fs, &option,
-          temporal_positions.get(), f0.get());
+  Harvest(
+      x.data(), static_cast<int>(x_length), fs, &option,
+      temporal_positions.get(), f0.get()
+  );
   {
     const nb::gil_scoped_acquire gil;
     return nb::make_tuple(
         util::make_ndarray<util::outputNDarray<1>>(
-            std::move(temporal_positions), {f0_length}),
+            std::move(temporal_positions), {f0_length}
+        ),
         util::make_ndarray<util::outputNDarray<1>>(std::move(f0), {f0_length}),
-        option.frame_period);
+        option.frame_period
+    );
   }
 }
 
 }  // namespace
 
 void harvest_init(nb::module_& m) {
-  m.def("harvest", &harvest, "x"_a, "fs"_a, "f0_floor"_a = nb::none(),
-        "f0_ceil"_a = nb::none(), "frame_period"_a = nb::none(),
-        nb::call_guard<nb::gil_scoped_release>(),
-        R"(
+  m.def(
+      "harvest", &harvest, "x"_a, "fs"_a, "f0_floor"_a = nb::none(),
+      "f0_ceil"_a = nb::none(), "frame_period"_a = nb::none(),
+      nb::call_guard<nb::gil_scoped_release>(),
+      R"(
         Calculates the F0 contour.
         
         Parameters
@@ -98,5 +107,6 @@ void harvest_init(nb::module_& m) {
 
         Examples
         --------
-        >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs))");
+        >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs))"
+  );
 }

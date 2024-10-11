@@ -22,28 +22,34 @@ using namespace nb::literals;
 
 namespace {
 
-auto synthesis(const util::inputNDarray<1>& f0,
-               const util::inputNDarray<2>& spectrogram,
-               const util::inputNDarray<2>& aperiodicity,
-               const int fft_size,
-               const double frame_period,
-               const int fs) {
+auto synthesis(
+    const util::inputNDarray<1>& f0,
+    const util::inputNDarray<2>& spectrogram,
+    const util::inputNDarray<2>& aperiodicity,
+    const int fft_size,
+    const double frame_period,
+    const int fs
+) {
   util::validate_fs(fs);
   if (spectrogram.size() != aperiodicity.size()) {
     throw std::invalid_argument(
-        "The lengths of spectrogram and aperiodicity do not match.");
+        "The lengths of spectrogram and aperiodicity do not match."
+    );
   }
   const size_t f0_length = f0.size();
   if (spectrogram.shape(0) != f0_length) {
     throw std::invalid_argument(
-        "The lengths of spectrogram and f0 do not match.");
+        "The lengths of spectrogram and f0 do not match."
+    );
   }
   if (aperiodicity.shape(0) != f0_length) {
     throw std::invalid_argument(
-        "The lengths of aperiodicity and f0 do not match.");
+        "The lengths of aperiodicity and f0 do not match."
+    );
   }
   const auto y_length = static_cast<size_t>(
-      ((static_cast<double>(f0_length) - 1) * frame_period / 1000.0 * fs) + 1);
+      ((static_cast<double>(f0_length) - 1) * frame_period / 1000.0 * fs) + 1
+  );
   if (f0_length == 0 || y_length == 0) {
     const nb::gil_scoped_acquire gil;
     return util::make_empty_ndarray();
@@ -61,9 +67,11 @@ auto synthesis(const util::inputNDarray<1>& f0,
     }
   }
   auto y = std::make_unique<double[]>(y_length);
-  Synthesis(f0.data(), static_cast<int>(f0_length), tmp_spectram.get(),
-            tmp_aperiodicity.get(), fft_size, frame_period, fs,
-            static_cast<int>(y_length), y.get());
+  Synthesis(
+      f0.data(), static_cast<int>(f0_length), tmp_spectram.get(),
+      tmp_aperiodicity.get(), fft_size, frame_period, fs,
+      static_cast<int>(y_length), y.get()
+  );
   {
     const nb::gil_scoped_acquire gil;
     return util::make_ndarray<util::outputNDarray<1>>(std::move(y), {y_length});
@@ -73,10 +81,11 @@ auto synthesis(const util::inputNDarray<1>& f0,
 }  // namespace
 
 void synthesis_init(nb::module_& m) {
-  m.def("synthesis", &synthesis, "f0"_a, "spectrogram"_a, "aperiodicity"_a,
-        "fft_size"_a, "frame_period"_a, "fs"_a,
-        nb::call_guard<nb::gil_scoped_release>(),
-        R"(
+  m.def(
+      "synthesis", &synthesis, "f0"_a, "spectrogram"_a, "aperiodicity"_a,
+      "fft_size"_a, "frame_period"_a, "fs"_a,
+      nb::call_guard<nb::gil_scoped_release>(),
+      R"(
         Synthesize the voice based on f0, spectrogram and aperiodicity.
         
         Parameters
@@ -105,5 +114,6 @@ void synthesis_init(nb::module_& m) {
         >>> refined_f0 = wwopy.stonemask(x, fs, temporal_positions, f0)
         >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, refined_f0)
         >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, refined_f0, fft_size)
-        >>> y = wwopy.synthesis(refined_f0, spectrogram, aperiodicity, fft_size, frame_period, fs))");
+        >>> y = wwopy.synthesis(refined_f0, spectrogram, aperiodicity, fft_size, frame_period, fs))"
+  );
 }

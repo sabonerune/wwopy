@@ -24,14 +24,16 @@ using namespace nb::literals;
 
 namespace {
 
-auto dio(const util::inputNDarray<1>& x,
-         const int fs,
-         const std::optional<double> f0_floor,
-         const std::optional<double> f0_ceil,
-         const std::optional<double> channels_in_octave,
-         const std::optional<double> frame_period,
-         const std::optional<int> speed,
-         const std::optional<double> allowed_range) {
+auto dio(
+    const util::inputNDarray<1>& x,
+    const int fs,
+    const std::optional<double> f0_floor,
+    const std::optional<double> f0_ceil,
+    const std::optional<double> channels_in_octave,
+    const std::optional<double> frame_period,
+    const std::optional<int> speed,
+    const std::optional<double> allowed_range
+) {
   const size_t x_length = x.size();
   util::validate_x_lenth(x_length);
   util::validate_fs(fs);
@@ -67,8 +69,10 @@ auto dio(const util::inputNDarray<1>& x,
   }
   if (x_length == 0) {
     const nb::gil_scoped_acquire gil;
-    return nb::make_tuple(util::make_empty_ndarray(),
-                          util::make_empty_ndarray(), option.frame_period);
+    return nb::make_tuple(
+        util::make_empty_ndarray(), util::make_empty_ndarray(),
+        option.frame_period
+    );
   }
   const size_t f0_length =
       GetSamplesForDIO(fs, static_cast<int>(x_length), option.frame_period);
@@ -80,21 +84,23 @@ auto dio(const util::inputNDarray<1>& x,
     const nb::gil_scoped_acquire gil;
     return nb::make_tuple(
         util::make_ndarray<util::outputNDarray<1>>(
-            std::move(temporal_positions), {f0_length}),
+            std::move(temporal_positions), {f0_length}
+        ),
         util::make_ndarray<util::outputNDarray<1>>(std::move(f0), {f0_length}),
-        option.frame_period);
+        option.frame_period
+    );
   }
 }
 
 }  // namespace
 
 void dio_init(nb::module_& m) {
-  m.def("dio", &dio, "x"_a, "fs"_a, "f0_floor"_a = nb::none(),
-        "f0_ceil"_a = nb::none(), "channels_in_octave"_a = nb::none(),
-        "frame_period"_a = nb::none(), "speed"_a = nb::none(),
-        "allowed_range"_a = nb::none(),
-        nb::call_guard<nb::gil_scoped_release>(),
-        R"(
+  m.def(
+      "dio", &dio, "x"_a, "fs"_a, "f0_floor"_a = nb::none(),
+      "f0_ceil"_a = nb::none(), "channels_in_octave"_a = nb::none(),
+      "frame_period"_a = nb::none(), "speed"_a = nb::none(),
+      "allowed_range"_a = nb::none(), nb::call_guard<nb::gil_scoped_release>(),
+      R"(
         Calculates the F0 contour.
         
         Parameters
@@ -125,5 +131,6 @@ void dio_init(nb::module_& m) {
 
         Examples
         --------
-        >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs))");
+        >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs))"
+  );
 }

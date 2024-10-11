@@ -24,18 +24,21 @@ using namespace nb::literals;
 
 namespace {
 
-auto cheaptrick(const util::inputNDarray<1>& x,
-                const int fs,
-                const util::inputNDarray<1>& temporal_positions,
-                const util::inputNDarray<1>& f0,
-                const std::optional<double> q1,
-                const std::optional<double> f0_floor,
-                const std::optional<int> fft_size) {
+auto cheaptrick(
+    const util::inputNDarray<1>& x,
+    const int fs,
+    const util::inputNDarray<1>& temporal_positions,
+    const util::inputNDarray<1>& f0,
+    const std::optional<double> q1,
+    const std::optional<double> f0_floor,
+    const std::optional<int> fft_size
+) {
   util::validate_x_lenth(x.size());
   util::validate_fs(fs);
   if (temporal_positions.size() != f0.size()) {
     throw std::invalid_argument(
-        "The lengths of temporal_positions and f0 do not match.");
+        "The lengths of temporal_positions and f0 do not match."
+    );
   }
   CheapTrickOption option{};
   InitializeCheapTrickOption(fs, &option);
@@ -77,7 +80,8 @@ auto cheaptrick(const util::inputNDarray<1>& x,
     const nb::gil_scoped_acquire gil;
     return nb::make_tuple(
         util::outputNDarray<2>(nullptr, {0, spectrogram_length}, nb::handle()),
-        option.fft_size);
+        option.fft_size
+    );
   }
   auto spectrogram = std::make_unique<double*[]>(f0_length);
   auto output_array =
@@ -85,13 +89,15 @@ auto cheaptrick(const util::inputNDarray<1>& x,
   for (size_t i = 0; i < f0_length; i++) {
     spectrogram[i] = &output_array[i * spectrogram_length];
   }
-  CheapTrick(x.data(), static_cast<int>(x.size()), fs,
-             temporal_positions.data(), f0.data(), static_cast<int>(f0_length),
-             &option, spectrogram.get());
+  CheapTrick(
+      x.data(), static_cast<int>(x.size()), fs, temporal_positions.data(),
+      f0.data(), static_cast<int>(f0_length), &option, spectrogram.get()
+  );
   {
     const nb::gil_scoped_acquire gil;
     const auto result = util::make_ndarray<util::outputNDarray<2>>(
-        std::move(output_array), {f0_length, spectrogram_length});
+        std::move(output_array), {f0_length, spectrogram_length}
+    );
     return nb::make_tuple(result, option.fft_size);
   }
 }
@@ -99,10 +105,11 @@ auto cheaptrick(const util::inputNDarray<1>& x,
 }  // namespace
 
 void cheeptrick_init(nb::module_& m) {
-  m.def("cheaptrick", &cheaptrick, "x"_a, "fs"_a, "temporal_positions"_a,
-        "f0"_a, "q1"_a = nb::none(), "f0_floor"_a = nb::none(),
-        "fft_size"_a = nb::none(), nb::call_guard<nb::gil_scoped_release>(),
-        R"(
+  m.def(
+      "cheaptrick", &cheaptrick, "x"_a, "fs"_a, "temporal_positions"_a, "f0"_a,
+      "q1"_a = nb::none(), "f0_floor"_a = nb::none(), "fft_size"_a = nb::none(),
+      nb::call_guard<nb::gil_scoped_release>(),
+      R"(
         Calculates the spectrogram that consists of spectral envelopes.
         
         Parameters
@@ -137,5 +144,6 @@ void cheeptrick_init(nb::module_& m) {
         Examples
         --------
         >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
-        >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0))");
+        >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0))"
+  );
 };
