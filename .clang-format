@@ -1,3 +1,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/clang-format.json
 BasedOnStyle: Chromium
 AlignAfterOpenBracket: BlockIndent
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: wwopy_init.hpp
+    Priority: 0

@@ -6,7 +6,6 @@ SPDX-License-Identifier: BSD-2-Clause
 #include "wwopy_init.hpp"
 
 #include <nanobind/nanobind.h>
-
 #include <world/synthesis.h>
 
 #include <cstddef>
