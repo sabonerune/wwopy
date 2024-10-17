@@ -7,7 +7,6 @@ SPDX-License-Identifier: BSD-2-Clause
 
 #include <nanobind/nanobind.h>
 #include <nanobind/stl/optional.h>  // NOLINT(misc-include-cleaner)
-
 #include <world/dio.h>
 
 #include <cstddef>

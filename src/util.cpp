@@ -9,8 +9,8 @@ SPDX-License-Identifier: BSD-2-Clause
 
 #include <climits>
 #include <cstddef>
+#include <sstream>
 #include <stdexcept>
-#include <string>
 
 namespace nb = nanobind;
 
@@ -23,9 +23,9 @@ auto util::make_empty_ndarray()
 
 void util::validate_x_lenth(size_t x_lenth) {
   if (x_lenth > INT_MAX) {
-    auto msg = "length of x must be less than or equal to " +
-               std::to_string(INT_MAX) + ".";
-    throw std::range_error(msg);
+    std::basic_ostringstream<char> s;
+    s << "length of x must be less than or equal to " << INT_MAX << ".";
+    throw std::range_error(s.str());
   }
 }
 
