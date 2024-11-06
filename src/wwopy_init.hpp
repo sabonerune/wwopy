@@ -11,3 +11,4 @@ void dio_init(nanobind::module_&);
 void harvest_init(nanobind::module_&);
 void stonemask_init(nanobind::module_&);
 void synthesis_init(nanobind::module_&);
+void synthesisrealtime_init(nanobind::module_&);

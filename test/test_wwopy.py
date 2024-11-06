@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import numpy as np
+
 if TYPE_CHECKING:
-    import numpy as np
     import numpy.typing as npt
 
 import wwopy
@@ -44,3 +45,15 @@ def test_synthesis(test_wave: tuple[npt.NDArray[np.double], int]):
 def test_harvest(test_wave: tuple[npt.NDArray[np.double], int]):
     x, fs = test_wave
     wwopy.harvest(x, fs)
+
+
+def test_realtimesynthesizer(test_wave: tuple[npt.NDArray[np.double], int]):
+    x, fs = test_wave
+    temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
+    spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
+    aperiodicity = wwopy.d4c(x, fs, temporal_positions, f0, fft_size)
+    synthesizer = wwopy.RealtimeSynthesizer(fs, frame_period, fft_size, 64, 1)
+    synthesizer.append(f0, spectrogram, aperiodicity)
+    y = np.empty(0, np.double)
+    while (out := synthesizer.synthesis()) is not None:
+        y = np.concatenate((y, out))

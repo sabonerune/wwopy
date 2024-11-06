@@ -3,6 +3,7 @@
 
 from ._version import _version as __version__
 from .wwopy_ext import (  # type: ignore[reportMissingModuleSource]
+    RealtimeSynthesizer,
     cheaptrick,
     d4c,
     dio,
@@ -13,6 +14,7 @@ from .wwopy_ext import (  # type: ignore[reportMissingModuleSource]
 
 __all__ = [
     "__version__",
+    "RealtimeSynthesizer",
     "cheaptrick",
     "d4c",
     "dio",

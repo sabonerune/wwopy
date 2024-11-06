@@ -13,4 +13,5 @@ NB_MODULE(wwopy_ext, m) {
   harvest_init(m);
   stonemask_init(m);
   synthesis_init(m);
+  synthesisrealtime_init(m);
 }

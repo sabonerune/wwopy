@@ -59,6 +59,7 @@ nanobind_add_module(
   src/harvest_ext.cpp
   src/stonemask_ext.cpp
   src/synthesis_ext.cpp
+  src/synthesisrealtime_ext.cpp
   src/util.cpp
   src/util.hpp
   src/wwopy_ext.cpp
