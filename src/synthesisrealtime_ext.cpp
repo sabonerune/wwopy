@@ -154,9 +154,7 @@ auto RealtimeSynthesizer::synthesis() -> std::optional<util::outputNDarray<1>> {
   }
   const auto buffer_size = static_cast<size_t>(synthesizer.buffer_size);
   auto y = std::make_unique<double[]>(buffer_size);
-  for (size_t i = 0; i < buffer_size; i++) {
-    y[i] = synthesizer.buffer[i];
-  }
+  std::copy_n(synthesizer.buffer, buffer_size, y.get());
   {
     const nb::gil_scoped_acquire gil;
     return util::make_ndarray<util::outputNDarray<1>>(
