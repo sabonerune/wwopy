@@ -26,7 +26,7 @@ if(NOT "${SKBUILD}")
   after editing C++ files.")
 endif()
 
-if(NOT "${CMAKE_BUILD_TYPE}" AND NOT "${CMAKE_CONFIGURATION_TYPES}")
+if(NOT DEFINED CMAKE_BUILD_TYPE AND NOT DEFINED CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE
       Release
       CACHE STRING "Choose the type of build." FORCE)
