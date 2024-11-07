@@ -56,3 +56,25 @@ def dio_result(
 ) -> tuple[npt.NDArray[np.double], npt.NDArray[np.double], float]:
     x, fs = test_wave
     return wwopy.dio(x, fs)
+
+
+@pytest.fixture
+def cheaptrick_result(
+    test_wave: tuple[npt.NDArray[np.double], int],
+    dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],
+) -> tuple[npt.NDArray[np.double], int]:
+    x, fs = test_wave
+    temporal_positions, f0, frame_period = dio_result
+    return wwopy.cheaptrick(x, fs, temporal_positions, f0)
+
+
+@pytest.fixture
+def d4c_result(
+    test_wave: tuple[npt.NDArray[np.double], int],
+    dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],
+    cheaptrick_result: tuple[npt.NDArray[np.double], int],
+) -> npt.NDArray[np.double]:
+    x, fs = test_wave
+    temporal_positions, f0, frame_period = dio_result
+    spectrogram, fft_size = cheaptrick_result
+    return wwopy.d4c(x, fs, temporal_positions, f0, fft_size)

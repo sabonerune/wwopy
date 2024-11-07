@@ -26,7 +26,7 @@ if(NOT "${SKBUILD}")
   after editing C++ files.")
 endif()
 
-if(NOT "${CMAKE_BUILD_TYPE}" AND NOT "${CMAKE_CONFIGURATION_TYPES}")
+if(NOT DEFINED CMAKE_BUILD_TYPE AND NOT DEFINED CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE
       Release
       CACHE STRING "Choose the type of build." FORCE)
@@ -59,6 +59,7 @@ nanobind_add_module(
   src/harvest_ext.cpp
   src/stonemask_ext.cpp
   src/synthesis_ext.cpp
+  src/synthesisrealtime_ext.cpp
   src/util.cpp
   src/util.hpp
   src/wwopy_ext.cpp

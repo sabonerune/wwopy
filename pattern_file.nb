@@ -75,3 +75,21 @@ wwopy_ext.synthesis:
         fs: int,
     ) -> NDArray[double]:
         \doc
+
+wwopy_ext.RealtimeSynthesizer.append:
+    \from numpy.typing import ArrayLike, NDArray
+    \from numpy import double
+    def append(
+        self,
+        f0: NDArray[double] | ArrayLike,
+        spectrogram: NDArray[double] | ArrayLike,
+        aperiodicity: NDArray[double] | ArrayLike,
+        /,
+    ) -> bool:
+        \doc
+
+wwopy_ext.RealtimeSynthesizer.synthesis:
+    \from numpy.typing import ArrayLike, NDArray
+    \from numpy import double
+    def synthesis(self) -> NDArray[double] | None:
+        \doc
