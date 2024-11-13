@@ -39,7 +39,7 @@ def test_synthesis(test_wave: tuple[npt.NDArray[np.double], int]):
     temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
     spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
     aperiodicity = wwopy.d4c(x, fs, temporal_positions, f0, fft_size)
-    wwopy.synthesis(f0, spectrogram, aperiodicity, fft_size, frame_period, fs)
+    wwopy.synthesis(f0, spectrogram, aperiodicity, frame_period, fs)
 
 
 def test_harvest(test_wave: tuple[npt.NDArray[np.double], int]):

@@ -7,6 +7,7 @@ from .wwopy_ext import (  # type: ignore[reportMissingModuleSource]
     cheaptrick,
     d4c,
     dio,
+    get_fft_size_from_f0_floor,
     harvest,
     stonemask,
     synthesis,
@@ -14,11 +15,12 @@ from .wwopy_ext import (  # type: ignore[reportMissingModuleSource]
 
 __all__ = [
     "__version__",
-    "RealtimeSynthesizer",
     "cheaptrick",
+    "get_fft_size_from_f0_floor",
     "d4c",
     "dio",
     "harvest",
     "stonemask",
     "synthesis",
+    "RealtimeSynthesizer",
 ]

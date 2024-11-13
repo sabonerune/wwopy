@@ -101,6 +101,25 @@ auto cheaptrick(
   }
 }
 
+auto get_fft_size_from_f0_floor(
+    const int fs,
+    const std::optional<double> f0_floor
+) {
+  util::validate_fs(fs);
+  CheapTrickOption option{};
+  InitializeCheapTrickOption(fs, &option);
+  if (f0_floor) {
+    if (*f0_floor <= 0.0) {
+      throw std::invalid_argument("f0_floor must be non-negative.");
+    }
+    if (*f0_floor < GetF0FloorForCheapTrick(fs, INT_MAX)) {
+      throw std::invalid_argument("Determine fft_size is invalid.");
+    }
+    option.f0_floor = *f0_floor;
+  }
+  return GetFFTSizeForCheapTrick(fs, &option);
+}
+
 }  // namespace
 
 void cheeptrick_init(nb::module_& m) {
@@ -144,5 +163,28 @@ void cheeptrick_init(nb::module_& m) {
         --------
         >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
         >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0))"
+  );
+  m.def(
+      "get_fft_size_from_f0_floor", &get_fft_size_from_f0_floor, "fs"_a,
+      "f0_floor"_a = nb::none(), nb::call_guard<nb::gil_scoped_release>(),
+      R"(
+        Determine fft_size from f0_floor.
+
+        Parameters
+        ----------
+        fs : int
+            Sampling frequency
+        f0_floor : float, optional
+
+        Returns
+        -------
+        int
+            Determined fft_size.
+        
+        Examples
+        --------
+        >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
+        >>> determine_fft_size = wwopy.get_fft_size_from_f0_floor(fs, 71.0)
+        >>> spectrogram, _ = wwopy.cheaptrick(x, fs, temporal_positions, f0, fft_size=determine_fft_size))"
   );
 };
