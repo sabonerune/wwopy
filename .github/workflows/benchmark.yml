@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -n "${{inputs.enable_pyworld}}" ]; then
+          if ${{inputs.enable_pyworld}} ; then
             python -m pip install pyworld setuptools
           fi
           python -m pip install .

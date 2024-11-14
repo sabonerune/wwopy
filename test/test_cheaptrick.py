@@ -35,6 +35,17 @@ def test_fft_size(
     assert result_fft_size == fft_size
 
 
+def test_get_fft_size_from_f0_floor(
+    test_wave: tuple[npt.NDArray[np.double], int],
+    dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],
+):
+    x, fs = test_wave
+    temporal_positions, f0, frame_period = dio_result
+    determine_fft_size = wwopy.get_fft_size_from_f0_floor(fs)
+    spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
+    assert determine_fft_size == fft_size
+
+
 def test_warning(
     test_wave: tuple[npt.NDArray[np.double], int],
     dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],

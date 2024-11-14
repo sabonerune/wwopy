@@ -70,7 +70,6 @@ wwopy_ext.synthesis:
         f0: NDArray[double] | ArrayLike,
         spectrogram: NDArray[double] | ArrayLike,
         aperiodicity: NDArray[double] | ArrayLike,
-        fft_size: int,
         frame_period: float,
         fs: int,
     ) -> NDArray[double]:
