@@ -80,32 +80,31 @@ void harvest_init(nb::module_& m) {
   m.def(
       "harvest", &harvest, "x"_a, "fs"_a, "f0_floor"_a = nb::none(),
       "f0_ceil"_a = nb::none(), "frame_period"_a = nb::none(),
-      nb::call_guard<nb::gil_scoped_release>(),
-      R"(
-        Calculates the F0 contour.
-        
-        Parameters
-        ----------
-        x : np.NDArray[np.double]
-            Input signal
-        fs : int
-            Sampling frequency
-        f0_floor : float, optional
-        f0_ceil : float, optional
-        frame_period : float, optional
-            Frame shift
-        
-        Returns
-        -------
-        temporal_positions : np.NDArray[np.double]
-            Time axis estimated by Harvest.
-        f0 : np.NDArray[np.double]
-            F0 contour estimated by Harvest.
-        frame_period : float
-            Automatically determined frame_period.
+      nb::call_guard<nb::gil_scoped_release>(), R"(
+      Calculates the F0 contour.
 
-        Examples
-        --------
-        >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs))"
+      Parameters
+      ----------
+      x : np.ndarray[tuple[int], np.dtype[np.double]]
+          Input signal
+      fs : int
+          Sampling frequency
+      f0_floor : float, optional
+      f0_ceil : float, optional
+      frame_period : float, optional
+          Frame shift
+
+      Returns
+      -------
+      temporal_positions : np.ndarray[tuple[int], np.dtype[np.double]]
+          Time axis estimated by Harvest.
+      f0 : np.ndarray[tuple[int], np.dtype[np.double]]
+          F0 contour estimated by Harvest.
+      frame_period : float
+          Automatically determined frame_period.
+
+      Examples
+      --------
+      >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs))"
   );
 }

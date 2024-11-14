@@ -107,42 +107,41 @@ void cheeptrick_init(nb::module_& m) {
   m.def(
       "cheaptrick", &cheaptrick, "x"_a, "fs"_a, "temporal_positions"_a, "f0"_a,
       "q1"_a = nb::none(), "f0_floor"_a = nb::none(), "fft_size"_a = nb::none(),
-      nb::call_guard<nb::gil_scoped_release>(),
-      R"(
-        Calculates the spectrogram that consists of spectral envelopes.
-        
-        Parameters
-        ----------
-        x : np.NDArray[np.double]
-            Input signal
-        fs : int
-            Sampling frequency
-        temporal_positions : np.NDArray[np.double]
-            Time axis
-        f0 : np.NDArray[np.double]
-            F0 contour
-        q1 : float, optional
-            Used for the spectral recovery
-            Since The parameter is optimized, you don't need to change the parameter.
-        f0_floor : float, optional
-            Whenever f0 is below this threshold the spectrum will be analyzed as if the frame is unvoiced
-            We strongly recommend not to change this value unless you have enough
-            knowledge of the signal processing in CheapTrick.
-            Used to determine fft_size.
-        fft_size : int, optional
-            FFT size
-            This variable has precedence over f0_floor.
-        
-        Returns
-        -------
-        spectrogram : np.NDArray[np.double]
-            Spectrogram estimated by CheapTrick.
-        fft_size: int
-            Automatically determined fft_size.
-        
-        Examples
-        --------
-        >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
-        >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0))"
+      nb::call_guard<nb::gil_scoped_release>(), R"(
+      Calculates the spectrogram that consists of spectral envelopes.
+
+      Parameters
+      ----------
+      x : np.ndarray[tuple[int], np.dtype[np.double]]
+          Input signal
+      fs : int
+          Sampling frequency
+      temporal_positions : np.ndarray[tuple[int], np.dtype[np.double]]
+          Time axis
+      f0 : np.ndarray[tuple[int], np.dtype[np.double]]
+          F0 contour
+      q1 : float, optional
+          Used for the spectral recovery
+          Since The parameter is optimized, you don't need to change the parameter.
+      f0_floor : float, optional
+          Whenever f0 is below this threshold the spectrum will be analyzed as if the frame is unvoiced
+          We strongly recommend not to change this value unless you have enough
+          knowledge of the signal processing in CheapTrick.
+          Used to determine fft_size.
+      fft_size : int, optional
+          FFT size
+          This variable has precedence over f0_floor.
+
+      Returns
+      -------
+      spectrogram : np.ndarray[tuple[int, int], np.dtype[np.double]]
+          Spectrogram estimated by CheapTrick.
+      fft_size: int
+          Automatically determined fft_size.
+
+      Examples
+      --------
+      >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
+      >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0))"
   );
 };

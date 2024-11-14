@@ -83,36 +83,35 @@ void synthesis_init(nb::module_& m) {
   m.def(
       "synthesis", &synthesis, "f0"_a, "spectrogram"_a, "aperiodicity"_a,
       "fft_size"_a, "frame_period"_a, "fs"_a,
-      nb::call_guard<nb::gil_scoped_release>(),
-      R"(
-        Synthesize the voice based on f0, spectrogram and aperiodicity.
-        
-        Parameters
-        ----------
-        f0 : np.NDArray[np.double]
-            f0 contour
-        spectrogram : np.NDArray[np.double]
-            Spectrogram
-        aperiodicity : np.NDArray[np.double]
-            Aperiodicity spectrogram
-        fft_size : int
-            FFT size
-        frame_period : float
-            Temporal period used for the analysis
-        fs : int
-            Sampling frequency
-        
-        Returns
-        -------
-        y : np.NDArray[np.double]
-            Calculated speech.
-        
-        Examples
-        --------
-        >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs)
-        >>> refined_f0 = wwopy.stonemask(x, fs, temporal_positions, f0)
-        >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, refined_f0)
-        >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, refined_f0, fft_size)
-        >>> y = wwopy.synthesis(refined_f0, spectrogram, aperiodicity, fft_size, frame_period, fs))"
+      nb::call_guard<nb::gil_scoped_release>(), R"(
+      Synthesize the voice based on f0, spectrogram and aperiodicity.
+
+      Parameters
+      ----------
+      f0 : np.ndarray[tuple[int], np.dtype[np.double]]
+          f0 contour
+      spectrogram : np.ndarray[tuple[int, int], np.dtype[np.double]]
+          Spectrogram
+      aperiodicity : np.ndarray[tuple[int, int], np.dtype[np.double]]
+          Aperiodicity spectrogram
+      fft_size : int
+          FFT size
+      frame_period : float
+          Temporal period used for the analysis
+      fs : int
+          Sampling frequency
+
+      Returns
+      -------
+      np.ndarray[tuple[int], np.dtype[np.double]]
+          Calculated speech.
+
+      Examples
+      --------
+      >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs)
+      >>> refined_f0 = wwopy.stonemask(x, fs, temporal_positions, f0)
+      >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, refined_f0)
+      >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, refined_f0, fft_size)
+      >>> y = wwopy.synthesis(refined_f0, spectrogram, aperiodicity, fft_size, frame_period, fs))"
   );
 }

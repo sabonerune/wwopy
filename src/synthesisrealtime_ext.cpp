@@ -174,8 +174,7 @@ void synthesisrealtime_init(nb::module_& m) {
   RealtimeSynthesizer
 
   Voice synthesis based on f0, spectrogram and aperiodicity.
-  This is an implementation for real-time applications.
-  )")
+  This is an implementation for real-time applications.)")
       .def(
           nb::init<const int, const double, const int, const int, const int>(),
           "fs"_a, "frame_period"_a, "fft_size"_a, "buffer_size"_a,
@@ -193,8 +192,7 @@ void synthesisrealtime_init(nb::module_& m) {
           buffer_size : int
               Buffer size (sample)
           number_of_pointers : int
-              The number of elements in the ring buffer
-          )"
+              The number of elements in the ring buffer)"
       )
       .def(
           "append", &RealtimeSynthesizer::append,
@@ -204,23 +202,20 @@ void synthesisrealtime_init(nb::module_& m) {
 
           Parameters
           ----------
-          f0 : np.NDArray[np.double]
+          f0 : np.ndarray[tuple[int], np.dtype[np.double]]
               F0 contour with length of f0_length
-          spectrogram : np.NDArray[np.double]
+          spectrogram : np.ndarray[tuple[int, int], np.dtype[np.double]]
               Spectrogram
-          aperiodicity : np.NDArray[np.double]
+          aperiodicity : np.ndarray[tuple[int, int], np.dtype[np.double]]
               Aperiodicity
 
           Returns
           -------
           bool
               True if added successfully.
-              Retrun True if the parameter is an empty array.
-          )"
+              Retrun True if the parameter is an empty array.)"
       )
-      .def(
-          "locked", &RealtimeSynthesizer::locked,
-          R"(
+      .def("locked", &RealtimeSynthesizer::locked, R"(
           Checks whether the synthesizer is locked or not.
           "Lock" is defined as the situation that the ring buffer cannot add parameters and cannot synthesize the waveform.
           It will be caused when the duration calculated by the number of added frames is below 1 / F0 + buffer_size / fs.
@@ -228,19 +223,15 @@ void synthesisrealtime_init(nb::module_& m) {
 
           Returns
           -------
-          bool
-          )"
-      )
+          bool)")
       .def(
           "synthesis", &RealtimeSynthesizer::synthesis,
-          nb::call_guard<nb::gil_scoped_release>(),
-          R"(
+          nb::call_guard<nb::gil_scoped_release>(), R"(
           Generates speech with length of buffer_size sample.
 
           Returns
           -------
-          np.NDArray[np.double] or None
-          )"
+          np.ndarray[tuple[int], np.dtype[np.double]] or None)"
       )
       .def(
           "refresh", &RealtimeSynthesizer::refresh,
