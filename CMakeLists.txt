@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15...3.30)
+cmake_minimum_required(VERSION 3.15...3.31)
 project(${SKBUILD_PROJECT_NAME} LANGUAGES CXX)
 
 if(NOT "${SKBUILD}")
@@ -89,15 +89,23 @@ if("${SKBUILD_STATE}" STREQUAL "editable")
 endif()
 
 # Merge licenses
-add_custom_command(OUTPUT always_rebuild COMMAND "${CMAKE_COMMAND}" -E echo)
-set_source_files_properties(always_rebuild PROPERTIES SYMBOLIC ON)
+execute_process(
+  COMMAND "${Python_EXECUTABLE}" cmake/get_nanobind_license_path.py
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  OUTPUT_VARIABLE nanobind_license_path
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  ENCODING UTF-8)
+
 add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/LICENSE.txt"
-  COMMAND "${Python_EXECUTABLE}" cmake/generate_license.py
-          "--dist=${CMAKE_BINARY_DIR}/LICENSE.txt"
-  DEPENDS always_rebuild
+  COMMAND
+    "${Python_EXECUTABLE}" cmake/generate_license.py nanobind
+    "${nanobind_license_path}" WORLD ext/World/LICENSE.txt
+    "--dist=${CMAKE_BINARY_DIR}/LICENSE.txt"
+  DEPENDS "${nanobind_license_path}" ext/World/LICENSE.txt
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   COMMENT "Generating ${CMAKE_BINARY_DIR}/LICENSE.txt")
+
 add_custom_target(wwopy_license ALL DEPENDS "${CMAKE_BINARY_DIR}/LICENSE.txt")
 install(FILES "${CMAKE_BINARY_DIR}/LICENSE.txt"
         DESTINATION "${SKBUILD_METADATA_DIR}/licenses")
