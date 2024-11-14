@@ -111,13 +111,12 @@ def bench_wwopy(number: int, globals: dict) -> None:
 
     ap = wwopy.d4c(data["wav"], data["fs"], temporal_positions, f0, fft_size)
     timer = timeit.Timer(
-        "world.synthesis(f0, sp, ap, fft_size, frame_period, fs)",
+        "world.synthesis(f0, sp, ap, frame_period, fs)",
         globals={
             "world": wwopy,
             "f0": f0,
             "sp": spectrogram,
             "ap": ap,
-            "fft_size": fft_size,
             "frame_period": frame_period,
             "fs": data["fs"],
         },
@@ -132,7 +131,7 @@ def all_action(x, fs):
     temporal_positions, f0, frame_period = world.harvest(x, fs)
     spectrogram, fft_size = world.cheaptrick(x, fs, temporal_positions, f0)
     aperiodicity = world.d4c(x, fs, temporal_positions, f0, fft_size)
-    world.synthesis(f0, spectrogram, aperiodicity, fft_size, frame_period, fs)
+    world.synthesis(f0, spectrogram, aperiodicity, frame_period, fs)
 
 threads = [threading.Thread(target=all_action, args=args) for i in range({max(n_thread, 2)})]
 for i in threads:
@@ -192,7 +191,6 @@ def bench_wwopy_mt(number: int, n_thread: int, globals: dict) -> None:
         f0,
         spectrogram,
         aperiodicity,
-        fft_size,
         frame_period,
         globals["fs"],
     ]

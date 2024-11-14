@@ -34,3 +34,11 @@ void util::validate_fs(int fs) {
     throw std::invalid_argument("samplerate must be non-negative.");
   }
 }
+
+auto util::restore_fft_size(size_t lenth) -> int {
+  if (lenth < 2) {
+    throw std::invalid_argument("lenth is too small");
+  }
+  const auto result = (lenth - 1) * 2;
+  return static_cast<int>(result);
+}

@@ -98,7 +98,6 @@ wwopy_ext.synthesis:
         | Annotated[
             ArrayLike, {"dtype": "double", "shape": (None, None), "writable": False}
         ],
-        fft_size: int,
         frame_period: float,
         fs: int,
     ) -> ndarray[tuple[int], dtype[double]]:

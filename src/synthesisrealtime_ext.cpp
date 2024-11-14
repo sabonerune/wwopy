@@ -94,7 +94,7 @@ auto RealtimeSynthesizer::append(
         "The lengths of spectrogram and aperiodicity do not match."
     );
   }
-  if ((sp_length - 1) * 2 != synthesizer.fft_size) {
+  if (util::restore_fft_size(sp_length) != synthesizer.fft_size) {
     throw std::invalid_argument(
         "The lengths of spectrogram and aperiodicity do not match fft_size."
     );
