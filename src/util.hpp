@@ -39,7 +39,7 @@ auto make_empty_ndarray()
 
 void validate_x_lenth(size_t x_lenth);
 void validate_fs(int fs);
-int restore_fft_size(size_t lenth);
+auto restore_fft_size(size_t lenth) -> int;
 
 }  // namespace util
 
