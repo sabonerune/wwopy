@@ -45,10 +45,10 @@ jobs:
         if: ${{ steps.install-depend.outcome == 'success' }}
         run: |
           clang-tidy -p build --warnings-as-errors=* src/*.cpp src/*.hpp
-      - name: Run clang-format
+      - name: Run cmake-format
         if: ${{ steps.install-depend.conclusion == 'success' }}
         run: |
-          cmake-format --check ./CMakeLists.txt
+          cmake-format ./CMakeLists.txt | git diff --exit-code --no-index -- ./CMakeLists.txt -
 
   test:
     runs-on: ${{ matrix.os }}
