@@ -93,8 +93,7 @@ execute_process(
   COMMAND "${Python_EXECUTABLE}" cmake/get_nanobind_license_path.py
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   OUTPUT_VARIABLE nanobind_license_path
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-  ENCODING UTF-8)
+  OUTPUT_STRIP_TRAILING_WHITESPACE ENCODING UTF-8)
 
 add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/LICENSE.txt"
