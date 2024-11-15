@@ -75,38 +75,37 @@ auto d4c(
 void d4c_init(nb::module_& m) {
   m.def(
       "d4c", &d4c, "x"_a, "fs"_a, "temporal_positions"_a, "f0"_a, "fft_size"_a,
-      "threshold"_a = nb::none(), nb::call_guard<nb::gil_scoped_release>(),
-      R"(
-        Calculates the aperiodicity.
-        
-        Parameters
-        ----------
-        x : np.NDArray[np.double]
-            Input signal
-        fs : int
-            Sampling frequency
-        temporal_positions : np.NDArray[np.double]
-            Time axis
-        f0 : np.NDArray[np.double]
-            F0 contour
-        fft_size : int
-            FFT size
-            Typically this will be the same as DIO or Harvest.
-        threshold : float, optional
-            It is used to determine the aperiodicity in whole frequency band.
-            D4C identifies whether the frame is voiced segment even if it had an F0.
-            If the estimated value falls below the threshold,
-            the aperiodicity in whole frequency band will set to 1.0.
-        
-        Returns
-        -------
-        aperiodicity : np.NDArray[np.double]
-            Aperiodicity estimated by D4C.
-        
-        Examples
-        --------
-        >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
-        >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
-        >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, f0, fft_size))"
+      "threshold"_a = nb::none(), nb::call_guard<nb::gil_scoped_release>(), R"(
+      Calculates the aperiodicity.
+
+      Parameters
+      ----------
+      x : np.ndarray[tuple[int], np.dtype[np.double]]
+          Input signal
+      fs : int
+          Sampling frequency
+      temporal_positions : np.ndarray[tuple[int], np.dtype[np.double]]
+          Time axis
+      f0 : np.ndarray[tuple[int], np.dtype[np.double]]
+          F0 contour
+      fft_size : int
+          FFT size
+          Typically this will be the same as DIO or Harvest.
+      threshold : float, optional
+          It is used to determine the aperiodicity in whole frequency band.
+          D4C identifies whether the frame is voiced segment even if it had an F0.
+          If the estimated value falls below the threshold,
+          the aperiodicity in whole frequency band will set to 1.0.
+
+      Returns
+      -------
+      np.ndarray[tuple[int, int], np.dtype[np.double]]
+          Aperiodicity estimated by D4C.
+
+      Examples
+      --------
+      >>> temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
+      >>> spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
+      >>> aperiodicity = wwopy.d4c(x, fs, temporal_positions, f0, fft_size))"
   );
 }

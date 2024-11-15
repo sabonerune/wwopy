@@ -1,14 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import numpy as np
 import pytest
 
 import wwopy
-
-if TYPE_CHECKING:
-    import numpy.typing as npt
 
 
 def test_empty():
@@ -23,8 +18,8 @@ def test_empty():
 
 
 def test_fft_size(
-    test_wave: tuple[npt.NDArray[np.double], int],
-    dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],
+    test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int],
+    dio_result: tuple[np.ndarray[tuple[int], np.dtype[np.double]], float],
 ):
     x, fs = test_wave
     fft_size = 4096
@@ -36,8 +31,8 @@ def test_fft_size(
 
 
 def test_get_fft_size_from_f0_floor(
-    test_wave: tuple[npt.NDArray[np.double], int],
-    dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],
+    test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int],
+    dio_result: tuple[np.ndarray[tuple[int], np.dtype[np.double]], float],
 ):
     x, fs = test_wave
     temporal_positions, f0, frame_period = dio_result
@@ -47,8 +42,8 @@ def test_get_fft_size_from_f0_floor(
 
 
 def test_warning(
-    test_wave: tuple[npt.NDArray[np.double], int],
-    dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],
+    test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int],
+    dio_result: tuple[np.ndarray[tuple[int], np.dtype[np.double]], float],
 ):
     x, fs = test_wave
     temporal_positions, f0, frame_period = dio_result

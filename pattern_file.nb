@@ -1,35 +1,45 @@
 wwopy_ext.cheaptrick:
-    \from numpy.typing import ArrayLike, NDArray
-    \from numpy import double
+    \from typing import Annotated
+    \from numpy import double, dtype, ndarray
+    \from numpy.typing import ArrayLike
     def cheaptrick(
-        x: NDArray[double] | ArrayLike,
+        x: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
         fs: int,
-        temporal_positions: NDArray[double] | ArrayLike,
-        f0: NDArray[double] | ArrayLike,
+        temporal_positions: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
+        f0: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
         q1: float | None = None,
         f0_floor: float | None = None,
         fft_size: int | None = None,
-    ) -> tuple[NDArray[double], int]:
+    ) -> tuple[ndarray[tuple[int, int], dtype[double]], int]:
         \doc
 
 wwopy_ext.d4c:
-    \from numpy.typing import ArrayLike, NDArray
-    \from numpy import double
+    \from typing import Annotated
+    \from numpy import double, dtype, ndarray
+    \from numpy.typing import ArrayLike
     def d4c(
-        x: NDArray[double] | ArrayLike,
+        x: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
         fs: int,
-        temporal_positions: NDArray[double] | ArrayLike,
-        f0: NDArray[double] | ArrayLike,
+        temporal_positions: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
+        f0: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
         fft_size: int,
         threshold: float | None = None,
-    ) -> NDArray[double]:
+    ) -> ndarray[tuple[int, int], dtype[double]]:
         \doc
 
 wwopy_ext.dio:
-    \from numpy.typing import ArrayLike, NDArray
-    \from numpy import double
+    \from typing import Annotated
+    \from numpy import double, dtype, ndarray
+    \from numpy.typing import ArrayLike
     def dio(
-        x: NDArray[double] | ArrayLike,
+        x: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
         fs: int,
         f0_floor: float | None = None,
         f0_ceil: float | None = None,
@@ -37,58 +47,85 @@ wwopy_ext.dio:
         frame_period: float | None = None,
         speed: int | None = None,
         allowed_range: float | None = None,
-    ) -> tuple[NDArray[double], NDArray[double], float]:
+    ) -> tuple[
+        ndarray[tuple[int], dtype[double]], ndarray[tuple[int], dtype[double]], float
+    ]:
         \doc
 
 wwopy_ext.harvest:
-    \from numpy.typing import ArrayLike, NDArray
-    \from numpy import double
+    \from typing import Annotated
+    \from numpy import double, dtype, ndarray
+    \from numpy.typing import ArrayLike
     def harvest(
-        x: NDArray[double] | ArrayLike,
+        x: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
         fs: int,
         f0_floor: float | None = None,
         f0_ceil: float | None = None,
         frame_period: float | None = None,
-    ) -> tuple[NDArray[double], NDArray[double], float]:
+    ) -> tuple[
+        ndarray[tuple[int], dtype[double]], ndarray[tuple[int], dtype[double]], float
+    ]:
         \doc
 
 wwopy_ext.stonemask:
-    \from numpy.typing import ArrayLike, NDArray
-    \from numpy import double
+    \from typing import Annotated
+    \from numpy import double, dtype, ndarray
+    \from numpy.typing import ArrayLike
     def stonemask(
-        x: NDArray[double] | ArrayLike,
+        x: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
         fs: int,
-        temporal_positions: NDArray[double] | ArrayLike,
-        f0: NDArray[double] | ArrayLike,
-    ) -> NDArray[double]:
+        temporal_positions: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
+        f0: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
+    ) -> ndarray[tuple[int], dtype[double]]:
         \doc
 
 wwopy_ext.synthesis:
-    \from numpy.typing import ArrayLike, NDArray
-    \from numpy import double
+    \from typing import Annotated
+    \from numpy import double, dtype, ndarray
+    \from numpy.typing import ArrayLike
     def synthesis(
-        f0: NDArray[double] | ArrayLike,
-        spectrogram: NDArray[double] | ArrayLike,
-        aperiodicity: NDArray[double] | ArrayLike,
+        f0: ndarray[tuple[int], dtype[double]]
+        | Annotated[ArrayLike, {"dtype": "double", "shape": (None), "writable": False}],
+        spectrogram: ndarray[tuple[int, int], dtype[double]]
+        | Annotated[
+            ArrayLike, {"dtype": "double", "shape": (None, None), "writable": False}
+        ],
+        aperiodicity: ndarray[tuple[int, int], dtype[double]]
+        | Annotated[
+            ArrayLike, {"dtype": "double", "shape": (None, None), "writable": False}
+        ],
         frame_period: float,
         fs: int,
-    ) -> NDArray[double]:
+    ) -> ndarray[tuple[int], dtype[double]]:
         \doc
 
 wwopy_ext.RealtimeSynthesizer.append:
-    \from numpy.typing import ArrayLike, NDArray
-    \from numpy import double
+    \from typing import Annotated
+    \from numpy import double, dtype, ndarray
+    \from numpy.typing import ArrayLike
     def append(
         self,
-        f0: NDArray[double] | ArrayLike,
-        spectrogram: NDArray[double] | ArrayLike,
-        aperiodicity: NDArray[double] | ArrayLike,
+        f0: ndarray[tuple[int], dtype[double]]
+        | Annotated[
+            ArrayLike, {"dtype": "double", "shape": (None), "writable": False}
+        ],
+        spectrogram: ndarray[tuple[int, int], dtype[double]]
+        | Annotated[
+            ArrayLike, {"dtype": "double", "shape": (None, None), "writable": False}
+        ],
+        aperiodicity: ndarray[tuple[int, int], dtype[double]]
+        | Annotated[
+            ArrayLike, {"dtype": "double", "shape": (None, None), "writable": False}
+        ],
         /,
     ) -> bool:
         \doc
 
 wwopy_ext.RealtimeSynthesizer.synthesis:
-    \from numpy.typing import ArrayLike, NDArray
-    \from numpy import double
-    def synthesis(self) -> NDArray[double] | None:
+    \from numpy import double, dtype, ndarray
+    def synthesis(self) -> ndarray[tuple[int], dtype[double]] | None:
         \doc

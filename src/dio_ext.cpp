@@ -100,36 +100,36 @@ void dio_init(nb::module_& m) {
       "frame_period"_a = nb::none(), "speed"_a = nb::none(),
       "allowed_range"_a = nb::none(), nb::call_guard<nb::gil_scoped_release>(),
       R"(
-        Calculates the F0 contour.
-        
-        Parameters
-        ----------
-        x : np.NDArray[np.double]
-            Input signal
-        fs : int
-            Sampling frequency
-        f0_floor : float, optional
-        f0_ceil : float, optional
-        channels_in_octave : float, optional
-        frame_period : float, optional
-            Frame shift
-        speed : int, optional
-            Valuable speed represents the ratio for downsampling.
-            The signal is downsampled to fs / speed Hz.
-        allowed_range : float, optional
-            Threshold used for fixing the F0 contour.
-        
-        Returns
-        -------
-        temporal_positions : np.NDArray[np.double]
-            Time axis estimated by DIO.
-        f0 : np.NDArray[np.double]
-            F0 contour estimated by DIO.
-        frame_period : float
-            Automatically determined frame_period.
+      Calculates the F0 contour.
+      
+      Parameters
+      ----------
+      x : np.ndarray[tuple[int], np.dtype[np.double]]
+          Input signal
+      fs : int
+          Sampling frequency
+      f0_floor : float, optional
+      f0_ceil : float, optional
+      channels_in_octave : float, optional
+      frame_period : float, optional
+          Frame shift
+      speed : int, optional
+          Valuable speed represents the ratio for downsampling.
+          The signal is downsampled to fs / speed Hz.
+      allowed_range : float, optional
+          Threshold used for fixing the F0 contour.
+      
+      Returns
+      -------
+      temporal_positions : np.ndarray[tuple[int], np.dtype[np.double]]
+          Time axis estimated by DIO.
+      f0 : np.ndarray[tuple[int], np.dtype[np.double]]
+          F0 contour estimated by DIO.
+      frame_period : float
+          Automatically determined frame_period.
 
-        Examples
-        --------
-        >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs))"
+      Examples
+      --------
+      >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs))"
   );
 }

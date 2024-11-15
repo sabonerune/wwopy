@@ -57,29 +57,28 @@ auto stonemask(
 void stonemask_init(nb::module_& m) {
   m.def(
       "stonemask", &stonemask, "x"_a, "fs"_a, "temporal_positions"_a, "f0"_a,
-      nb::call_guard<nb::gil_scoped_release>(),
-      R"(
-        Refines the estimated F0 by Dio()
-        
-        Parameters
-        ----------
-        x : np.NDArray[np.double]
-            Input signal
-        fs : int
-            Sampling frequency
-        temporal_positions : np.NDArray[np.double]
-            Time axis by dio()
-        f0 : np.NDArray[np.double]
-            F0 contour by dio()
-        
-        Returns
-        -------
-        refined_f0 : np.NDArray[np.double]
-            Refined F0.
-        
-        Examples
-        --------
-        >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs)
-        >>> refined_f0 = wwopy.stonemask(x, fs, temporal_positions, f0))"
+      nb::call_guard<nb::gil_scoped_release>(), R"(
+      Refines the estimated F0 by Dio()
+
+      Parameters
+      ----------
+      x : np.ndarray[tuple[int], np.dtype[np.double]]
+          Input signal
+      fs : int
+          Sampling frequency
+      temporal_positions : np.ndarray[tuple[int], np.dtype[np.double]]
+          Time axis by dio()
+      f0 : np.ndarray[tuple[int], np.dtype[np.double]]
+          F0 contour by dio()
+
+      Returns
+      -------
+      np.ndarray[tuple[int], np.dtype[np.double]]
+          Refined F0.
+
+      Examples
+      --------
+      >>> temporal_positions, f0, frame_period = wwopy.dio(x, fs)
+      >>> refined_f0 = wwopy.stonemask(x, fs, temporal_positions, f0))"
   );
 }

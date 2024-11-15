@@ -1,20 +1,15 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import numpy as np
 
 import wwopy
 
-if TYPE_CHECKING:
-    import numpy.typing as npt
-
 
 def test_multi_append(
-    test_wave: tuple[npt.NDArray[np.double], int],
-    dio_result: tuple[npt.NDArray[np.double], npt.NDArray[np.double], float],
-    cheaptrick_result: tuple[npt.NDArray[np.double], int],
-    d4c_result: npt.NDArray[np.double],
+    test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int],
+    dio_result: tuple[np.ndarray[tuple[int], np.dtype[np.double]], float],
+    cheaptrick_result: tuple[np.ndarray[tuple[int, int], np.dtype[np.double]], int],
+    d4c_result: np.ndarray[tuple[int, int]],
 ):
     x, fs = test_wave
     temporal_positions, f0, frame_period = dio_result
