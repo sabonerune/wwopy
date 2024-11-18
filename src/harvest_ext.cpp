@@ -23,13 +23,16 @@ using namespace nb::literals;
 
 namespace {
 
+using harvest_result = nb::
+    typed<nb::tuple, util::outputNDarray<1>, util::outputNDarray<1>, double>;
+
 auto harvest(
     const util::inputNDarray<1>& x,
     const int fs,
     const std::optional<double> f0_floor,
     const std::optional<double> f0_ceil,
     const std::optional<double> frame_period
-) {
+) -> harvest_result {
   const size_t x_length = x.size();
   util::validate_x_lenth(x_length);
   util::validate_fs(fs);
@@ -49,10 +52,11 @@ auto harvest(
   }
   if (x_length == 0) {
     const nb::gil_scoped_acquire gil;
-    return nb::make_tuple(
+    const auto result = nb::make_tuple(
         util::make_empty_ndarray(), util::make_empty_ndarray(),
         option.frame_period
     );
+    return harvest_result{result};
   }
   const size_t f0_length =
       GetSamplesForHarvest(fs, static_cast<int>(x_length), option.frame_period);
@@ -64,13 +68,14 @@ auto harvest(
   );
   {
     const nb::gil_scoped_acquire gil;
-    return nb::make_tuple(
+    const auto result = nb::make_tuple(
         util::make_ndarray<util::outputNDarray<1>>(
             std::move(temporal_positions), {f0_length}
         ),
         util::make_ndarray<util::outputNDarray<1>>(std::move(f0), {f0_length}),
         option.frame_period
     );
+    return harvest_result{result};
   }
 }
 

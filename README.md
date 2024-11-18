@@ -17,8 +17,6 @@ python -m pip install https://github.com/sabonerune/wwopy
 
 ## API
 
-See docstring and test.
-
 For argument specifications, see the [WORLD](https://github.com/mmorise/World) repository.
 
 ## Development
