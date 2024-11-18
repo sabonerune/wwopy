@@ -7,9 +7,13 @@ import wwopy
 
 def test_multi_append(
     test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int],
-    dio_result: tuple[np.ndarray[tuple[int], np.dtype[np.double]], float],
+    dio_result: tuple[
+        np.ndarray[tuple[int], np.dtype[np.double]],
+        np.ndarray[tuple[int], np.dtype[np.double]],
+        float,
+    ],
     cheaptrick_result: tuple[np.ndarray[tuple[int, int], np.dtype[np.double]], int],
-    d4c_result: np.ndarray[tuple[int, int]],
+    d4c_result: np.ndarray[tuple[int, int], np.dtype[np.double]],
 ):
     x, fs = test_wave
     temporal_positions, f0, frame_period = dio_result

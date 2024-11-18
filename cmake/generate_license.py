@@ -7,10 +7,6 @@ from pathlib import Path
 _project_root = Path(__file__).parents[1]
 
 
-def read_license_from_file(filepath: Path) -> str:
-    return filepath.read_text("utf-8")
-
-
 def write_license(dist: Path, licenses: Iterable[tuple[str, str]]):
     delimiter = "\n" + "=" * 80 + "\n\n"
     with dist.open(mode="wt", encoding="utf-8", newline="\n") as f:

@@ -2,12 +2,14 @@ import sys
 from importlib.metadata import distribution
 
 if __name__ == "__main__":
-    sys.stdout.reconfigure(encoding="utf-8")
     dist = distribution("nanobind")
     version = dist.version
     # NOTE: Use packaging when requirements increase
     filename = "LICENSE" if version == "2.0.0" else "licenses/LICENSE"
     target = None
+    if dist.files is None:
+        msg = 'distribution("nanobind").files is None.'
+        raise Exception(msg)
     for file in dist.files:
         if file.match(f"nanobind-*.dist-info/{filename}"):
             target = file
@@ -15,4 +17,4 @@ if __name__ == "__main__":
     if target is None:
         msg = "nanobind license file is not found."
         raise Exception(msg)
-    print(target.locate())  # noqa: T201
+    sys.stdout.buffer.write(str(target.locate()).encode("utf-8"))

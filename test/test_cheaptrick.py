@@ -19,7 +19,11 @@ def test_empty():
 
 def test_fft_size(
     test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int],
-    dio_result: tuple[np.ndarray[tuple[int], np.dtype[np.double]], float],
+    dio_result: tuple[
+        np.ndarray[tuple[int], np.dtype[np.double]],
+        np.ndarray[tuple[int], np.dtype[np.double]],
+        float,
+    ],
 ):
     x, fs = test_wave
     fft_size = 4096
@@ -32,7 +36,11 @@ def test_fft_size(
 
 def test_get_fft_size_from_f0_floor(
     test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int],
-    dio_result: tuple[np.ndarray[tuple[int], np.dtype[np.double]], float],
+    dio_result: tuple[
+        np.ndarray[tuple[int], np.dtype[np.double]],
+        np.ndarray[tuple[int], np.dtype[np.double]],
+        float,
+    ],
 ):
     x, fs = test_wave
     temporal_positions, f0, frame_period = dio_result
@@ -43,7 +51,11 @@ def test_get_fft_size_from_f0_floor(
 
 def test_warning(
     test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int],
-    dio_result: tuple[np.ndarray[tuple[int], np.dtype[np.double]], float],
+    dio_result: tuple[
+        np.ndarray[tuple[int], np.dtype[np.double]],
+        np.ndarray[tuple[int], np.dtype[np.double]],
+        float,
+    ],
 ):
     x, fs = test_wave
     temporal_positions, f0, frame_period = dio_result
