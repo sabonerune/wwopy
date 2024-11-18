@@ -170,16 +170,15 @@ void RealtimeSynthesizer::refresh() {
 }  // namespace
 
 void synthesisrealtime_init(nb::module_& m) {
-  nb::class_<RealtimeSynthesizer>(m, "RealtimeSynthesizer", R"(
-  RealtimeSynthesizer
-
-  Voice synthesis based on f0, spectrogram and aperiodicity.
-  This is an implementation for real-time applications.)")
+  nb::class_<RealtimeSynthesizer>(m, "RealtimeSynthesizer")
       .def(
           nb::init<const int, const double, const int, const int, const int>(),
           "fs"_a, "frame_period"_a, "fft_size"_a, "buffer_size"_a,
           "number_of_pointers"_a, nb::call_guard<nb::gil_scoped_release>(), R"(
-          Initializes the synthesizer based on basic parameters.
+          RealtimeSynthesizer
+
+          Voice synthesis based on f0, spectrogram and aperiodicity.
+          This is an implementation for real-time applications.
 
           Parameters
           ----------
@@ -192,7 +191,18 @@ void synthesisrealtime_init(nb::module_& m) {
           buffer_size : int
               Buffer size (sample)
           number_of_pointers : int
-              The number of elements in the ring buffer)"
+              The number of elements in the ring buffer
+
+          Methods
+          -------
+          append:
+              Attempts to add speech parameters.
+          locked:
+              Checks whether the synthesizer is locked or not.
+          synthesis:
+              Generates speech with length of buffer_size sample.
+          refresh:
+              Sets the parameters to default.)"
       )
       .def(
           "append", &RealtimeSynthesizer::append,

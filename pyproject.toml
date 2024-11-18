@@ -40,6 +40,7 @@ dependencies = ["numpy"]
 
 [project.optional-dependencies]
 dev = ["clang-format~=20.0", "clang-tidy~=20.0", "cmakelang", "ruff"]
+doc = ["numpydoc~=1.8", "myst-parser~=4.0", "Sphinx~=8.1"]
 test = ["pytest"]
 
 [tool.scikit-build]
@@ -49,6 +50,7 @@ sdist.include = ["src/wwopy/_version.py"]
 sdist.exclude = [
   ".github/",
   "benchmark/",
+  "docs/",
   "test/",
   ".clang-format",
   ".clang-tidy",
@@ -73,7 +75,6 @@ _version = "{version}"
 '''
 
 [tool.pytest.ini_options]
-minversion = "6.0"
 testpaths = ["test"]
 
 [tool.ruff]

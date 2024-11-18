@@ -23,6 +23,8 @@ using namespace nb::literals;
 
 namespace {
 
+using cheaptrick_result = nb::typed<nb::tuple, util::outputNDarray<2>, int>;
+
 auto cheaptrick(
     const util::inputNDarray<1>& x,
     const int fs,
@@ -31,7 +33,7 @@ auto cheaptrick(
     const std::optional<double> q1,
     const std::optional<double> f0_floor,
     const std::optional<int> fft_size
-) {
+) -> cheaptrick_result {
   util::validate_x_lenth(x.size());
   util::validate_fs(fs);
   if (temporal_positions.size() != f0.size()) {
@@ -78,10 +80,9 @@ auto cheaptrick(
   const size_t spectrogram_length = (option.fft_size / 2) + 1;
   if (f0_length == 0) {
     const nb::gil_scoped_acquire gil;
-    return nb::make_tuple(
-        util::outputNDarray<2>(nullptr, {0, spectrogram_length}, nb::handle()),
-        option.fft_size
-    );
+    const auto result =
+        util::outputNDarray<2>(nullptr, {0, spectrogram_length}, nb::handle());
+    return cheaptrick_result{nb::make_tuple(result, option.fft_size)};
   }
   auto spectrogram = std::make_unique<double*[]>(f0_length);
   auto output_array =
@@ -98,7 +99,7 @@ auto cheaptrick(
     const auto result = util::make_ndarray<util::outputNDarray<2>>(
         std::move(output_array), {f0_length, spectrogram_length}
     );
-    return nb::make_tuple(result, option.fft_size);
+    return cheaptrick_result{nb::make_tuple(result, option.fft_size)};
   }
 }
 
