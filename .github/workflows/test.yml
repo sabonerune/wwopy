@@ -53,6 +53,10 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           cmake-format ./CMakeLists.txt | git diff --exit-code --no-index -- ./CMakeLists.txt -
+      - name: Run cmake-lint
+        if: ${{ !cancelled() }}
+        run: |
+          cmake-lint CMakeLists.txt
 
   test:
     runs-on: ${{ matrix.os }}
