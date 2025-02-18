@@ -1,13 +1,16 @@
 # yaml-language-server: $schema=https://json.schemastore.org/clang-tidy.json
-Checks: '-*,
-  bugprone-*,
-  cert-*,
-  clang-analyzer-*,
-  concurrency-*,
-  misc-*,
-  modernize-*,
-  performance-*,
-  portability-*,
-  readability-*,
-  -readability-identifier-length,
-  -*-avoid-c-arrays'
+Checks:
+  - -*
+  - bugprone-*
+  - cert-*
+  - clang-analyzer-*
+  - concurrency-*
+  - misc-*
+  - modernize-*
+  - performance-*
+  - portability-*
+  - readability-*
+  - -readability-identifier-length
+  - -*-avoid-c-arrays
+CheckOptions:
+  misc-include-cleaner.IgnoreHeaders: nanobind/stl/.*
