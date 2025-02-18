@@ -105,6 +105,10 @@ add_custom_command(
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   COMMENT "Generating ${CMAKE_BINARY_DIR}/LICENSE.txt")
 
-add_custom_target(wwopy_license ALL DEPENDS "${CMAKE_BINARY_DIR}/LICENSE.txt")
+add_custom_target(
+  wwopy_license ALL
+  DEPENDS "${CMAKE_BINARY_DIR}/LICENSE.txt"
+  COMMENT "Generate license file")
+
 install(FILES "${CMAKE_BINARY_DIR}/LICENSE.txt"
         DESTINATION "${SKBUILD_METADATA_DIR}/licenses")
