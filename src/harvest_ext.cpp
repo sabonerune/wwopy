@@ -6,7 +6,7 @@ SPDX-License-Identifier: BSD-2-Clause
 #include "wwopy_init.hpp"
 
 #include <nanobind/nanobind.h>
-#include <nanobind/stl/optional.h>  // NOLINT(misc-include-cleaner)
+#include <nanobind/stl/optional.h>
 #include <world/harvest.h>
 
 #include <cstddef>

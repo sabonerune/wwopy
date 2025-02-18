@@ -34,19 +34,23 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --requirement ./requirements.txt
           python -m pip install --no-build-isolation -C build-dir=build -C cmake.args=-DCMAKE_EXPORT_COMPILE_COMMANDS=ON .[dev]
-      - name: Run Ruff
+      - name: Ruff Check
         run: |
           python -m ruff check --output-format=github
+      - name: Ruff Format
+        if: ${{ !cancelled() }}
+        run: |
+          python -m ruff format --diff
       - name: Run clang-format
-        if: ${{ steps.install-depend.outcome == 'success' }}
+        if: ${{ !cancelled() }}
         run: |
           clang-format --Werror --dry-run src/*.cpp src/*.hpp
       - name: Run clang-tidy
-        if: ${{ steps.install-depend.outcome == 'success' }}
+        if: ${{ !cancelled() }}
         run: |
           clang-tidy -p build --warnings-as-errors=* src/*.cpp src/*.hpp
       - name: Run cmake-format
-        if: ${{ steps.install-depend.conclusion == 'success' }}
+        if: ${{ !cancelled() }}
         run: |
           cmake-format ./CMakeLists.txt | git diff --exit-code --no-index -- ./CMakeLists.txt -
 

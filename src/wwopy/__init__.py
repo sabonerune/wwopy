@@ -14,13 +14,13 @@ from .wwopy_ext import (  # type: ignore[reportMissingModuleSource]
 )
 
 __all__ = [
+    "RealtimeSynthesizer",
     "__version__",
     "cheaptrick",
-    "get_fft_size_from_f0_floor",
     "d4c",
     "dio",
+    "get_fft_size_from_f0_floor",
     "harvest",
     "stonemask",
     "synthesis",
-    "RealtimeSynthesizer",
 ]
