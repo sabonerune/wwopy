@@ -9,8 +9,8 @@ SPDX-License-Identifier: BSD-2-Clause
 #include <nanobind/stl/optional.h>
 #include <world/cheaptrick.h>
 
-#include <climits>
 #include <cstddef>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <stdexcept>
@@ -64,7 +64,8 @@ auto cheaptrick(
     if (*f0_floor <= 0.0) {
       throw std::invalid_argument("f0_floor must be non-negative.");
     }
-    if (*f0_floor < GetF0FloorForCheapTrick(fs, INT_MAX)) {
+    if (*f0_floor <
+        GetF0FloorForCheapTrick(fs, std::numeric_limits<int>::max())) {
       throw std::invalid_argument("Determine fft_size is invalid.");
     }
     option.f0_floor = *f0_floor;
@@ -112,7 +113,8 @@ auto get_fft_size_from_f0_floor(
     if (*f0_floor <= 0.0) {
       throw std::invalid_argument("f0_floor must be non-negative.");
     }
-    if (*f0_floor < GetF0FloorForCheapTrick(fs, INT_MAX)) {
+    if (*f0_floor <
+        GetF0FloorForCheapTrick(fs, std::numeric_limits<int>::max())) {
       throw std::invalid_argument("Determine fft_size is invalid.");
     }
     option.f0_floor = *f0_floor;
