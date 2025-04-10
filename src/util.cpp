@@ -7,8 +7,8 @@ SPDX-License-Identifier: BSD-2-Clause
 
 #include <nanobind/ndarray.h>
 
-#include <climits>
 #include <cstddef>
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 
@@ -22,9 +22,10 @@ auto util::make_empty_ndarray()
 }
 
 void util::validate_x_lenth(size_t x_lenth) {
-  if (x_lenth > INT_MAX) {
+  if (x_lenth > std::numeric_limits<int>::max()) {
     std::basic_ostringstream<char> s;
-    s << "length of x must be less than or equal to " << INT_MAX << ".";
+    s << "length of x must be less than or equal to "
+      << std::numeric_limits<int>::max() << ".";
     throw std::range_error(s.str());
   }
 }
