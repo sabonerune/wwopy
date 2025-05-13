@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       enable_pyworld:
+        description: Compare with pyworld.
         type: boolean
 
 jobs:
   benchmark:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.13"]
