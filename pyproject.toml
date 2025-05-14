@@ -48,7 +48,7 @@ sdist.include = ["src/wwopy/_version.py"]
 sdist.exclude = [
   ".github/",
   "benchmark/",
-  "test/",
+  "tests/",
   ".clang-format",
   ".clang-tidy",
   ".cmake-format",
@@ -73,7 +73,7 @@ _version = "{version}"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-testpaths = ["test"]
+testpaths = ["tests"]
 
 [tool.ruff]
 src = ["src"]
