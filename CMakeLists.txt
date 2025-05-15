@@ -47,6 +47,7 @@ find_package(nanobind CONFIG REQUIRED)
 
 # WORLD
 option(WORLD_BUILD_EXAMPLES "" OFF)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_subdirectory(ext/World EXCLUDE_FROM_ALL)
 
 # module
