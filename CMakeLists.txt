@@ -48,7 +48,7 @@ find_package(nanobind CONFIG REQUIRED)
 # WORLD
 option(WORLD_BUILD_EXAMPLES "" OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-add_subdirectory(ext/World EXCLUDE_FROM_ALL)
+add_subdirectory(vendored/World EXCLUDE_FROM_ALL)
 
 # module
 nanobind_add_module(
@@ -100,9 +100,9 @@ add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/LICENSE.txt"
   COMMAND
     "${Python_EXECUTABLE}" cmake/generate_license.py nanobind
-    "${nanobind_license_path}" WORLD ext/World/LICENSE.txt
+    "${nanobind_license_path}" WORLD vendored/World/LICENSE.txt
     "--dist=${CMAKE_BINARY_DIR}/LICENSE.txt"
-  DEPENDS "${nanobind_license_path}" ext/World/LICENSE.txt
+  DEPENDS "${nanobind_license_path}" vendored/World/LICENSE.txt
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   COMMENT "Generating ${CMAKE_BINARY_DIR}/LICENSE.txt")
 
