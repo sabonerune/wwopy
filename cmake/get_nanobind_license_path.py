@@ -1,5 +1,6 @@
 import sys
 from importlib.metadata import distribution
+from pathlib import PurePosixPath
 
 if __name__ == "__main__":
     dist = distribution("nanobind")
@@ -17,4 +18,4 @@ if __name__ == "__main__":
     if target is None:
         msg = "nanobind license file is not found."
         raise Exception(msg)
-    sys.stdout.buffer.write(str(target.locate()).encode("utf-8"))
+    sys.stdout.buffer.write(str(PurePosixPath(target.locate())).encode("utf-8"))

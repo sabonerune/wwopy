@@ -48,7 +48,7 @@ find_package(nanobind CONFIG REQUIRED)
 # WORLD
 option(WORLD_BUILD_EXAMPLES "" OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-add_subdirectory(ext/World EXCLUDE_FROM_ALL)
+add_subdirectory(vendored/World EXCLUDE_FROM_ALL)
 
 # module
 nanobind_add_module(
@@ -96,20 +96,10 @@ execute_process(
   OUTPUT_VARIABLE nanobind_license_path
   OUTPUT_STRIP_TRAILING_WHITESPACE ENCODING UTF-8)
 
-add_custom_command(
-  OUTPUT "${CMAKE_BINARY_DIR}/LICENSE.txt"
-  COMMAND
-    "${Python_EXECUTABLE}" cmake/generate_license.py nanobind
-    "${nanobind_license_path}" WORLD ext/World/LICENSE.txt
-    "--dist=${CMAKE_BINARY_DIR}/LICENSE.txt"
-  DEPENDS "${nanobind_license_path}" ext/World/LICENSE.txt
-  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-  COMMENT "Generating ${CMAKE_BINARY_DIR}/LICENSE.txt")
-
 add_custom_target(
-  wwopy_license ALL
-  DEPENDS "${CMAKE_BINARY_DIR}/LICENSE.txt"
+  nanobind_license ALL
+  DEPENDS "${nanobind_license_path}"
   COMMENT "Generate license file")
 
-install(FILES "${CMAKE_BINARY_DIR}/LICENSE.txt"
-        DESTINATION "${SKBUILD_METADATA_DIR}/licenses")
+install(FILES "${nanobind_license_path}"
+        DESTINATION "${SKBUILD_METADATA_DIR}/licenses/vendored/nanobind")
