@@ -74,12 +74,10 @@ _version = "{version}"
 [tool.cibuildwheel]
 skip = [
   "pp38-*",  # Not work
-  "pp31{1,2,3}-*", # Numpy does not support
+  "pp31{2...9}-*", # Numpy does not support
 ]
 archs = "auto64"
 enable = ["pypy"]
-
-build-frontend = "build"
 
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
