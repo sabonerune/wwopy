@@ -74,7 +74,7 @@ _version = "{version}"
 [tool.cibuildwheel]
 skip = [
   "pp38-*",  # Not work
-  "pp31{2...9}-*", # Numpy does not support
+  "pp3{12..99}-*", # Numpy does not support
 ]
 archs = "auto64"
 enable = ["pypy"]
