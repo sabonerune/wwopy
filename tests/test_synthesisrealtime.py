@@ -15,8 +15,8 @@ def test_multi_append(
     cheaptrick_result: tuple[np.ndarray[tuple[int, int], np.dtype[np.double]], int],
     d4c_result: np.ndarray[tuple[int, int], np.dtype[np.double]],
 ):
-    x, fs = test_wave
-    temporal_positions, f0, frame_period = dio_result
+    _x, fs = test_wave
+    _temporal_positions, f0, frame_period = dio_result
     spectrogram, fft_size = cheaptrick_result
     synthesizer = wwopy.RealtimeSynthesizer(fs, frame_period, fft_size, 64, 8)
     i = 0

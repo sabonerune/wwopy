@@ -70,7 +70,7 @@ def cheaptrick_result(
     ],
 ) -> tuple[np.ndarray[tuple[int, int], np.dtype[np.double]], int]:
     x, fs = test_wave
-    temporal_positions, f0, frame_period = dio_result
+    temporal_positions, f0, _frame_period = dio_result
     return wwopy.cheaptrick(x, fs, temporal_positions, f0)
 
 
@@ -85,6 +85,6 @@ def d4c_result(
     cheaptrick_result: tuple[np.ndarray[tuple[int, int], np.dtype[np.double]], int],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.double]]:
     x, fs = test_wave
-    temporal_positions, f0, frame_period = dio_result
-    spectrogram, fft_size = cheaptrick_result
+    temporal_positions, f0, _frame_period = dio_result
+    _spectrogram, fft_size = cheaptrick_result
     return wwopy.d4c(x, fs, temporal_positions, f0, fft_size)
