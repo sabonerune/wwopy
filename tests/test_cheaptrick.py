@@ -27,8 +27,8 @@ def test_fft_size(
 ):
     x, fs = test_wave
     fft_size = 4096
-    temporal_positions, f0, frame_period = dio_result
-    spectrogram, result_fft_size = wwopy.cheaptrick(
+    temporal_positions, f0, _frame_period = dio_result
+    _spectrogram, result_fft_size = wwopy.cheaptrick(
         x, fs, temporal_positions, f0, fft_size=fft_size
     )
     assert result_fft_size == fft_size
@@ -43,9 +43,9 @@ def test_get_fft_size_from_f0_floor(
     ],
 ):
     x, fs = test_wave
-    temporal_positions, f0, frame_period = dio_result
+    temporal_positions, f0, _frame_period = dio_result
     determine_fft_size = wwopy.get_fft_size_from_f0_floor(fs)
-    spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
+    _spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
     assert determine_fft_size == fft_size
 
 
@@ -58,10 +58,10 @@ def test_warning(
     ],
 ):
     x, fs = test_wave
-    temporal_positions, f0, frame_period = dio_result
+    temporal_positions, f0, _frame_period = dio_result
     fft_size = 2048
     with pytest.warns(RuntimeWarning):
-        spectrogram, result_fft_size = wwopy.cheaptrick(
+        _spectrogram, result_fft_size = wwopy.cheaptrick(
             x, fs, temporal_positions, f0, f0_floor=72.0, fft_size=fft_size
         )
     assert result_fft_size == fft_size

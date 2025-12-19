@@ -7,14 +7,14 @@ import wwopy
 
 def test_cheaptrick(test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int]):
     x, fs = test_wave
-    temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
+    temporal_positions, f0, _frame_period = wwopy.harvest(x, fs)
     wwopy.cheaptrick(x, fs, temporal_positions, f0)
 
 
 def test_d4c(test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int]):
     x, fs = test_wave
-    temporal_positions, f0, frame_period = wwopy.harvest(x, fs)
-    spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
+    temporal_positions, f0, _frame_period = wwopy.harvest(x, fs)
+    _spectrogram, fft_size = wwopy.cheaptrick(x, fs, temporal_positions, f0)
     wwopy.d4c(x, fs, temporal_positions, f0, fft_size)
 
 
@@ -25,7 +25,7 @@ def test_dio(test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int])
 
 def test_stonemask(test_wave: tuple[np.ndarray[tuple[int], np.dtype[np.double]], int]):
     x, fs = test_wave
-    temporal_positions, f0, frame_period = wwopy.dio(x, fs)
+    temporal_positions, f0, _frame_period = wwopy.dio(x, fs)
     wwopy.stonemask(x, fs, temporal_positions, f0)
 
 

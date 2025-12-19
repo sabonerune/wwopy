@@ -1,6 +1,7 @@
 [build-system]
 requires = [
   "nanobind~=2.0",
+  "nanobind<2.10; python_version<'3.9'",
   "scikit-build-core>=0.11",
   "typing-extensions>=3.10, <5; python_version<'3.11'",
 ]
@@ -73,11 +74,13 @@ _version = "{version}"
 
 [tool.cibuildwheel]
 skip = [
-  "pp38-*",  # Not work
-  "pp31{2...9}-*", # Numpy does not support
+  "cp3{9,10}-win_arm64", # Numpy does not support
+  "pp38-*",              # Not work
+  "pp39-macosx_arm64",   # Numpy does not support
+  "pp3{12..99}-*",       # Numpy does not support
 ]
 archs = "auto64"
-enable = ["pypy"]
+enable = ["pypy", "pypy-eol"]
 
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
