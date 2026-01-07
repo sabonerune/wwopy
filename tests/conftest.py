@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     import numpy.typing as npt
 
 
-_TEST_FILE = Path(__file__).parents[1] / "ext/World/test/vaiueo2d.wav"
+_TEST_FILE = Path(__file__).parents[1] / "vendored/World/test/vaiueo2d.wav"
 
 
 @pytest.fixture

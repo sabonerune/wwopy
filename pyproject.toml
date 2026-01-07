@@ -57,13 +57,13 @@ sdist.exclude = [
   ".gitignore",
   ".gitmodules",
   "requirements.txt",
-  "ext/World/build/",
-  "ext/World/examples/",
-  "ext/World/test/",
-  "ext/World/visualstudio20[0-9][0-9]/",
-  "ext/World/.gitignore",
-  "ext/World/makefile",
-  "ext/World/styleguide.txt",
+  "vendored/World/build/",
+  "vendored/World/examples/",
+  "vendored/World/test/",
+  "vendored/World/visualstudio20[0-9][0-9]/",
+  "vendored/World/.gitignore",
+  "vendored/World/makefile",
+  "vendored/World/styleguide.txt",
 ]
 
 [tool.setuptools_scm]
