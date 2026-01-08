@@ -29,7 +29,9 @@ auto make_ndarray(
 ) -> T {
   T out =
       T(ptr.get(), shape,
-        nanobind::capsule(ptr.get(), [](void* p) noexcept { delete[] (U*)p; }));
+        nanobind::capsule(ptr.get(), [](void* p) noexcept -> void {
+          delete[] (U*)p;
+        }));
   ptr.release();
   return out;
 }

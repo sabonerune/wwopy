@@ -33,13 +33,14 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Topic :: Scientific/Engineering",
   "Topic :: Software Development",
 ]
 dependencies = ["numpy"]
 
 [project.optional-dependencies]
-dev = ["clang-format~=20.0", "clang-tidy~=20.0", "cmakelang", "ruff"]
+dev = ["clang-format~=21.0", "clang-tidy~=21.0", "cmakelang", "ruff"]
 test = ["pytest"]
 
 [tool.scikit-build]
