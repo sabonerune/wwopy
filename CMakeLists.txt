@@ -67,6 +67,11 @@ nanobind_add_module(
   src/wwopy_init.hpp)
 target_compile_features(wwopy_ext PUBLIC cxx_std_17)
 target_compile_options(wwopy_ext PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+target_compile_options(
+  wwopy_ext
+  PRIVATE $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/W4>
+          $<$<AND:$<CONFIG:Debug>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-Wall;-Wextra>
+)
 target_link_libraries(wwopy_ext PRIVATE world::core)
 install(TARGETS wwopy_ext LIBRARY DESTINATION wwopy)
 
