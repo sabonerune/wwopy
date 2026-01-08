@@ -22,7 +22,7 @@ auto util::make_empty_ndarray()
 }
 
 void util::validate_x_lenth(size_t x_lenth) {
-  if (x_lenth > std::numeric_limits<int>::max()) {
+  if (x_lenth > static_cast<size_t>(std::numeric_limits<int>::max())) {
     std::basic_ostringstream<char> s;
     s << "length of x must be less than or equal to "
       << std::numeric_limits<int>::max() << ".";

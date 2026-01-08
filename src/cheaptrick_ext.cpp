@@ -188,4 +188,4 @@ void cheeptrick_init(nb::module_& m) {
         >>> determine_fft_size = wwopy.get_fft_size_from_f0_floor(fs, 71.0)
         >>> spectrogram, _ = wwopy.cheaptrick(x, fs, temporal_positions, f0, fft_size=determine_fft_size))"
   );
-};
+}
