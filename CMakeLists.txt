@@ -54,6 +54,7 @@ add_subdirectory(vendored/World EXCLUDE_FROM_ALL)
 nanobind_add_module(
   wwopy_ext
   NB_STATIC
+  NB_SUPPRESS_WARNINGS
   src/cheaptrick_ext.cpp
   src/d4c_ext.cpp
   src/dio_ext.cpp
@@ -67,11 +68,13 @@ nanobind_add_module(
   src/wwopy_init.hpp)
 target_compile_features(wwopy_ext PUBLIC cxx_std_17)
 target_compile_options(wwopy_ext PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+set(WARNING_FLAG
+    -Wall;-Wextra;-Wpedantic;-Wcast-qual;-Wconversion;-Wformat=2;-Wshadow)
 target_compile_options(
   wwopy_ext
-  PRIVATE $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/W4>
-          $<$<AND:$<CONFIG:Debug>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-Wall;-Wextra>
-)
+  PRIVATE
+    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/W4>
+    $<$<AND:$<CONFIG:Debug>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:${WARNING_FLAG}>)
 target_link_libraries(wwopy_ext PRIVATE world::core)
 install(TARGETS wwopy_ext LIBRARY DESTINATION wwopy)
 
