@@ -8,6 +8,7 @@
           "FREE_THREADED",
           "NB_STATIC",
           "NB_SHARED",
+          "NB_SUPPRESS_WARNINGS",
           "PROTECT_STACK",
           "LTO",
           "NOMINSIZE",
